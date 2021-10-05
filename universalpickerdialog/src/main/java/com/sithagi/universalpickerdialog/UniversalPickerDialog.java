@@ -165,7 +165,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
     public DirectionalLayout createBottomActionBar() {
         final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
         final int paddingVertical = AttrHelper.vp2px(12, builder.context);
-        final int btnTextSize = (int) MaterialNumberPicker.fpToPixels(builder.context, builder.actionBtnSize);
+        final int btnTextSize = (int) MaterialNumberPicker.fpToPixels(builder.context, Builder.ACTION_BTN_SIZE);
 
         DirectionalLayout bottomLayout = new DirectionalLayout(builder.context);
 
@@ -387,7 +387,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      * Builder class to add setting to the UniversalPickerDialog.
      */
     public static class Builder {
-        public static final int actionBtnSize = 32;
+        public static final int ACTION_BTN_SIZE = 32;
         private Context context;
         private Color positiveButtonColor = Color.BLACK;
         private Color negativeButtonColor = Color.BLACK;
