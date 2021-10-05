@@ -9,6 +9,13 @@ public class Developer {
     private final Specialization specialization;
     private final City location;
 
+    /**
+     * developer constructor.
+     *
+     * @param level level
+     * @param specialization specialization
+     * @param location location
+     */
     public Developer(Level level, Specialization specialization, City location) {
         this.level = level;
         this.specialization = specialization;
@@ -60,6 +67,9 @@ public class Developer {
         }
     }
 
+    /**
+     * Specialization class.
+     */
     public static class Specialization {
 
         private final long id;
