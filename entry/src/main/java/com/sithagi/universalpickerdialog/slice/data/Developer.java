@@ -1,13 +1,13 @@
 package com.sithagi.universalpickerdialog.slice.data;
 
-/*
- * Created by troy379 on 25.08.16.
+/**
+ * Developer data model.
  */
 public class Developer {
 
-    private Level level;
-    private Specialization specialization;
-    private City location;
+    private final Level level;
+    private final Specialization specialization;
+    private final City location;
 
     public Developer(Level level, Specialization specialization, City location) {
         this.level = level;
@@ -37,10 +37,13 @@ public class Developer {
                 location.getCountry());
     }
 
+    /**
+     * level model.
+     */
     public static class Level {
 
-        private long id;
-        private String name;
+        private final long id;
+        private final String name;
 
         public Level(long id, String name) {
             this.id = id;
@@ -51,12 +54,16 @@ public class Developer {
         public String toString() {
             return name;
         }
+
+        public long getId() {
+            return id;
+        }
     }
 
     public static class Specialization {
 
-        private long id;
-        private String name;
+        private final long id;
+        private final String name;
 
         public Specialization(long id, String name) {
             this.id = id;
@@ -66,6 +73,10 @@ public class Developer {
         @Override
         public String toString() {
             return name;
+        }
+
+        public long getId() {
+            return id;
         }
     }
 

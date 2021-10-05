@@ -1,26 +1,28 @@
 package com.sithagi.universalpickerdialog;
 
 import ohos.agp.colors.RgbColor;
-import ohos.agp.components.*;
+import ohos.agp.components.AttrHelper;
+import ohos.agp.components.Button;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.DirectionalLayout;
+import ohos.agp.components.Picker;
+import ohos.agp.components.Text;
 import ohos.agp.components.element.ShapeElement;
 import ohos.agp.utils.Color;
 import ohos.agp.utils.LayoutAlignment;
 import ohos.agp.window.dialog.BaseDialog;
 import ohos.agp.window.dialog.CommonDialog;
-import ohos.agp.window.dialog.IDialog;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static ohos.agp.components.ComponentContainer.LayoutConfig.MATCH_CONTENT;
-import static ohos.agp.components.ComponentContainer.LayoutConfig.MATCH_PARENT;
 
-public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDialog.DialogListener {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-UniversalPickerDialog-");
+/**
+ * UniversalPickerDialog.
+ */
+public class UniversalPickerDialog implements BaseDialog.DialogListener {
 
     //#region parameters
     protected Builder builder;
@@ -33,23 +35,26 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     //#region implementations
 
     /**
-     * Displays the dialog
+     * Displays the dialog.
      */
-
     public void show() {
         this.dialog.show();
     }
 
     /**
-     * Cancel the dialog
+     * Cancel the dialog.
      */
-
     public void cancel() {
         // NOTE: should we destroy the dialog when the cancel is called ?
         dialog.hide();
     }
 
 
+    /**
+     * init the picker with given inputs.
+     *
+     * @param inputs inputs
+     */
     public void initPickers(Input... inputs) {
         this.pickers = new ArrayList<>();
         if (inputs != null) {
@@ -59,35 +64,39 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
     }
 
-
+    /**
+     * get the picker with given input.
+     *
+     * @param input input class
+     * @return MaterialNumberPicker
+     */
     public MaterialNumberPicker getPicker(Input input) {
-        MaterialNumberPicker.Builder builder = new MaterialNumberPicker.Builder(this.builder.context);
-        builder.minValue(0);
-        builder.maxValue(input.list.size() - 1);
-        builder.defaultValue(input.defaultPosition);
-        builder.wrapSelectorWheel(true);
-        builder.backgroundColor(Color.TRANSPARENT);
+        MaterialNumberPicker.Builder pickerBuilder = new MaterialNumberPicker.Builder(this.builder.context);
+        pickerBuilder.minValue(0);
+        pickerBuilder.maxValue(input.list.size() - 1);
+        pickerBuilder.defaultValue(input.defaultPosition);
+        pickerBuilder.wrapSelectorWheel(true);
+        pickerBuilder.backgroundColor(Color.TRANSPARENT);
 
         if (this.builder.contentTextSize != 0) {
-            builder.textSize(this.builder.contentTextSize);
+            pickerBuilder.textSize(this.builder.contentTextSize);
         }
         if (this.builder.contentTextColor.getValue() != 0) {
-            builder.textColor(this.builder.contentTextColor);
+            pickerBuilder.textColor(this.builder.contentTextColor);
         }
 
         if (input.formatter != null) {
-            builder.formatter(input.formatter);
+            pickerBuilder.formatter(input.formatter);
         } else {
-            builder.formatter(value -> input.list.get(value).toString());
+            pickerBuilder.formatter(value -> input.list.get(value).toString());
         }
 
-        return builder.build();
+        return pickerBuilder.build();
     }
 
 
-
     /**
-     * apply background color to a component
+     * apply background color to a component.
      */
     static void applyBackgroundColor(Component component, Color color) {
         ShapeElement shapeElement = new ShapeElement();
@@ -99,6 +108,7 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     //#region create layout for the dialog
 
     /**
+     * design diagram.
      * [------------------------]
      * |<--title                |
      * |------------------------|
@@ -108,32 +118,32 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
      * |------------------------|
      * |        action buttons->|
      * |------------------------|
+     *
+     * @param context context
      */
-
     public DirectionalLayout makeDialogTitle(Context context) {
-        int paddingHorizontal = AttrHelper.vp2px(18, context);
-        int paddingVertical = AttrHelper.vp2px(12, context);
+        final int paddingHorizontal = AttrHelper.vp2px(18, context);
+        final int paddingVertical = AttrHelper.vp2px(12, context);
         int textSize = AttrHelper.vp2px(30, context);
 
-        DirectionalLayout layout = new DirectionalLayout(context);
-        Text text = new Text(context);
+        final DirectionalLayout dialogTitleLayout = new DirectionalLayout(context);
+        Text dialogTitle = new Text(context);
 
-        text.setTextSize(textSize);
-        text.setText(getTitle());
-        text.setTextColor(builder.titleColor);
-        layout.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
+        dialogTitle.setTextSize(textSize);
+        dialogTitle.setText(getTitle());
+        dialogTitle.setTextColor(builder.titleColor);
+        dialogTitleLayout.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
 
-        layout.addComponent(text);
-        return layout;
+        dialogTitleLayout.addComponent(dialogTitle);
+        return dialogTitleLayout;
     }
 
 
-
     DirectionalLayout getBody() {
-        int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
-        int paddingVertical = AttrHelper.vp2px(18, builder.context);
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        final int paddingVertical = AttrHelper.vp2px(18, builder.context);
         DirectionalLayout body = new DirectionalLayout(builder.context);
-        DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig();
+        final DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig();
 
         body.setVerticalPadding(paddingVertical, paddingVertical);
         body.setHorizontalPadding(paddingHorizontal, paddingHorizontal);
@@ -148,12 +158,14 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     }
 
     /**
+     * creates the bottom action layout.
+     *
      * @return the bottom action layout
      */
     public DirectionalLayout createBottomActionBar() {
-        int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
-        int paddingVertical = AttrHelper.vp2px(12, builder.context);
-        int btnTextSize = (int) MaterialNumberPicker.fpToPixels(builder.context, builder.ACTION_BTN_SIZE);
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        final int paddingVertical = AttrHelper.vp2px(12, builder.context);
+        final int btnTextSize = (int) MaterialNumberPicker.fpToPixels(builder.context, builder.actionBtnSize);
 
         DirectionalLayout bottomLayout = new DirectionalLayout(builder.context);
 
@@ -162,8 +174,8 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         bottomLayout.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingHorizontal);
 
         DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig(
-                MATCH_PARENT,
-                MATCH_CONTENT
+                DirectionalLayout.LayoutConfig.MATCH_PARENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
         );
 
         layoutConfig.alignment = LayoutAlignment.END;
@@ -181,8 +193,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
             for (int i = 0; i < selectedValues.length; i++) {
                 selectedValues[i] = pickers.get(i).getValue();
             }
-            if (builder.listener != null)
+            if (builder.listener != null) {
                 builder.listener.onPick(selectedValues, builder.key);
+            }
             dialog.hide();
         });
         //#endregion
@@ -204,14 +217,19 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     }
 
 
-
+    /**
+     * make the dialog view.
+     */
     public void createView() {
-        int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
         layout = new DirectionalLayout(builder.context);
-        DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig(MATCH_CONTENT, MATCH_CONTENT);
-        DirectionalLayout titleTextComponent = makeDialogTitle(builder.context);
-        DirectionalLayout bottomActionComponent = createBottomActionBar();
-        DirectionalLayout bodyComponetText = getBody();
+        final DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig(
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
+        );
+        final DirectionalLayout titleTextComponent = makeDialogTitle(builder.context);
+        final DirectionalLayout bottomActionComponent = createBottomActionBar();
+        final DirectionalLayout bodyComponetText = getBody();
 
 
         layout.setOrientation(Component.VERTICAL);
@@ -221,7 +239,10 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         layout.setLayoutConfig(layoutConfig);
 
         for (MaterialNumberPicker picker : pickers) {
-            ComponentContainer.LayoutConfig pickerParams = new ComponentContainer.LayoutConfig(MATCH_CONTENT, MATCH_CONTENT);
+            ComponentContainer.LayoutConfig pickerParams = new ComponentContainer.LayoutConfig(
+                    ComponentContainer.LayoutConfig.MATCH_CONTENT,
+                    ComponentContainer.LayoutConfig.MATCH_CONTENT
+            );
             pickerParams.setMarginsLeftAndRight(paddingHorizontal, paddingHorizontal);
             picker.setLayoutConfig(pickerParams);
             bodyComponetText.addComponent(picker);
@@ -234,33 +255,52 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     }
 
 
+    /**
+     * creates a CommonDialog with a custom layout.
+     */
     public void createDialog() {
         dialog = new CommonDialog(builder.context)
                 .setContentCustomComponent(layout);
-        dialog.setSize(MATCH_CONTENT, MATCH_CONTENT);
+        dialog.setSize(
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
+        );
         dialog.setSwipeToDismiss(true);
         dialog.setDialogListener(this);
     }
 
 
-
     @Override
     public boolean isTouchOutside() {
-        HiLog.info(LABEL_LOG, "setDialogListener: hide", "");
         dialog.hide();
         return false;
     }
 
+    /**
+     * get title from the builder.
+     *
+     * @return title
+     */
     public String getTitle() {
         return builder.title;
     }
 
+    /**
+     * get negativeButtonText from the builder.
+     *
+     * @return negativeButtonText
+     */
     public String getNegativeButtonText() {
         return builder.negativeButtonText != null
                 ? builder.negativeButtonText
                 : builder.context.getString(ResourceTable.String_cancel_text);
     }
 
+    /**
+     * get positiveButtonText from the builder.
+     *
+     * @return positiveButtonText
+     */
     public String getPositiveText() {
         return builder.positiveButtonText != null
                 ? builder.positiveButtonText
@@ -268,12 +308,13 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     }
 
 
-    @Override
-    public void onDisplay(IDialog iDialog) {
-
-    }
     //#endregion implementations
 
+    /**
+     * UniversalPickerDialog constructor.
+     *
+     * @param builder builder
+     */
     protected UniversalPickerDialog(Builder builder) {
         this.builder = builder;
         initPickers(builder.inputs);
@@ -283,13 +324,17 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
 
 
     //#region input
+
+    /**
+     * input class to add data to the UniversalPickerDialog.
+     */
     public static class Input {
         private final int defaultPosition;
         private final AbstractList<?> list;
         private Picker.Formatter formatter;
 
         /**
-         * Constructor for data represented in {@link AbstractList}
+         * Constructor for data represented in {@link AbstractList}.
          *
          * @param defaultPosition is a position of item which selected by default
          * @param list            list of objects
@@ -300,10 +345,11 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Constructor for data represented in array
+         * Constructor for data represented in array.
          *
          * @param defaultPosition is a position of item which selected by default
          * @param array           array of objects
+         * @param <T>             array type
          */
         public <T> Input(int defaultPosition, T[] array) {
             this.defaultPosition = defaultPosition;
@@ -311,7 +357,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set {@link Picker.Formatter} for format current value into a string for presentation
+         * Set {@link Picker.Formatter} for format current value into a string for presentation.
+         *
+         * @param formatter formatter
          */
         public void setFormatter(Picker.Formatter formatter) {
             this.formatter = formatter;
@@ -319,13 +367,14 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     }
 
     /**
-     * Interface definition for a callback to be invoked when data is picked
+     * Interface definition for a callback to be invoked when data is picked.
      */
     public interface OnPickListener {
         /**
-         * Called when data has been picked
+         * Called when data has been picked.
          *
          * @param selectedValues array with selected indices in the order in which {@link Input}s were added
+         * @param key key
          */
         void onPick(int[] selectedValues, int key);
     }
@@ -333,20 +382,30 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
     //#endregion input
 
     //#region builder
+
+    /**
+     * Builder class to add setting to the UniversalPickerDialog.
+     */
     public static class Builder {
-        public final int ACTION_BTN_SIZE = 32;
+        public static final int actionBtnSize = 32;
         private Context context;
-        private Color positiveButtonColor = Color.BLACK, negativeButtonColor = Color.BLACK,
-                titleColor = Color.BLACK, backgroundColor, contentTextColor;
+        private Color positiveButtonColor = Color.BLACK;
+        private Color negativeButtonColor = Color.BLACK;
+        private Color titleColor = Color.BLACK;
+        private Color backgroundColor;
+        private Color contentTextColor;
         private float contentTextSize;
         private int key;
         private String title;
-        private String negativeButtonText, positiveButtonText;
+        private String negativeButtonText;
+        private String positiveButtonText;
         private OnPickListener listener;
         private Input[] inputs;
 
         /**
          * Constructor using a context for this builder and the {@link UniversalPickerDialog} it creates.
+         *
+         * @param context context
          */
         public Builder(Context context) {
             this.context = context;
@@ -356,8 +415,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color resource for negative and positive buttons
+         * Set text color resource for negative and positive buttons.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -368,8 +428,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color int for negative and positive buttons
+         * Set text color int for negative and positive buttons.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setButtonsColor(Color color) {
@@ -378,8 +439,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color resource for positive button
+         * Set text color resource for positive button.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -390,8 +452,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color int for positive button
+         * Set text color int for positive button.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setPositiveButtonColor(Color color) {
@@ -400,8 +463,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color resource for negative button
+         * Set text color resource for negative button.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -412,8 +476,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color int for negative button
+         * Set text color int for negative button.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setNegativeButtonColor(Color color) {
@@ -422,8 +487,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color resource for title
+         * Set text color resource for title.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -434,8 +500,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color int for title
+         * Set text color int for title.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTitleColor(Color color) {
@@ -444,8 +511,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set background color resource for dialog
+         * Set background color resource for dialog.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -456,8 +524,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set background color int for dialog
+         * Set background color int for dialog.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setBackgroundColor(Color color) {
@@ -466,8 +535,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color resource data set items
+         * Set text color resource data set items.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         @SuppressWarnings("deprecation")
@@ -478,8 +548,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text color int for data set items
+         * Set text color int for data set items.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setContentTextColor(Color color) {
@@ -488,8 +559,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set text size sp for data set items
+         * Set text size sp for data set items.
          *
+         * @param size text size
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setContentTextSize(float size) {
@@ -502,6 +574,7 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
          * It may be helpful if you using more than one picker in your activity/fragment.
          * This key will be returned in {@link OnPickListener#onPick(int[], int)}
          *
+         * @param key key
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setKey(int key) {
@@ -510,8 +583,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set title text resource
+         * Set title text resource.
          *
+         * @param title title
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTitle(int title) {
@@ -519,8 +593,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set title text string
+         * Set title text string.
          *
+         * @param title title
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTitle(String title) {
@@ -529,8 +604,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set positive button text resource
+         * Set positive button text resource.
          *
+         * @param text string resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setPositiveButtonText(int text) {
@@ -538,8 +614,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set positive button text string
+         * Set positive button text string.
          *
+         * @param text positive button text
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setPositiveButtonText(String text) {
@@ -548,8 +625,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set negative button text resource
+         * Set negative button text resource.
          *
+         * @param text string resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setNegativeButtonText(int text) {
@@ -557,8 +635,9 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
         }
 
         /**
-         * Set negative button text string
+         * Set negative button text string.
          *
+         * @param text negative button text
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setNegativeButtonText(String text) {
@@ -568,6 +647,8 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
 
         /**
          * Set {@link OnPickListener} for picker.
+         *
+         * @param listener listener
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -580,6 +661,7 @@ public class UniversalPickerDialog implements BaseDialog.DisplayCallback, BaseDi
          * Set list of {@link Input}'s using varargs.
          * Each {@link Input} is representing an spinner in dialog with list of items from its {@link Input#list}
          *
+         * @param inputs inputs
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setInputs(Input... inputs) {

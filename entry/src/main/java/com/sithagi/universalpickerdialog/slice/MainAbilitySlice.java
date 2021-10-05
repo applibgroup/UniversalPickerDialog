@@ -1,25 +1,23 @@
 package com.sithagi.universalpickerdialog.slice;
 
+import ohos.aafwk.ability.AbilitySlice;
+import ohos.aafwk.content.Intent;
+import ohos.agp.components.Component;
+import ohos.agp.components.ListContainer;
+import ohos.agp.utils.Color;
+import ohos.agp.window.dialog.ToastDialog;
 import com.sithagi.universalpickerdialog.ResourceTable;
 import com.sithagi.universalpickerdialog.UniversalPickerDialog;
 import com.sithagi.universalpickerdialog.slice.data.City;
 import com.sithagi.universalpickerdialog.slice.data.Developer;
 import com.sithagi.universalpickerdialog.slice.data.FakeData;
-import ohos.aafwk.ability.AbilitySlice;
-import ohos.aafwk.content.Intent;
-import ohos.agp.components.Component;
-import ohos.agp.components.ListContainer;
-import ohos.agp.components.Picker;
-import ohos.agp.utils.Color;
-import ohos.agp.window.dialog.ToastDialog;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
 
 import java.util.ArrayList;
 
-public class MainAbilitySlice extends AbilitySlice implements ListContainer.ItemClickedListener,
-        UniversalPickerDialog.OnPickListener {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
+/**
+ * MainAbilitySlice.
+ */
+public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDialog.OnPickListener {
     private static final int KEY_SINGLE_PICK = 1;
     private static final int KEY_MULTI_PICK = 2;
     private ArrayList<City> citiesList;
@@ -114,16 +112,12 @@ public class MainAbilitySlice extends AbilitySlice implements ListContainer.Item
                 );
                 result = "You're looking for " + developer.toString();
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + key);
         }
-        new ToastDialog(getContext()).
-                setText(result).
-                setDuration(500).show();
+        new ToastDialog(getContext()).setText(result).setDuration(500).show();
 
 
     }
 
-    @Override
-    public void onItemClicked(ListContainer listContainer, Component component, int i, long l) {
-
-    }
 }

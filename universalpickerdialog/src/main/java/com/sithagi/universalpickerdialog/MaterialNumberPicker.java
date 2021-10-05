@@ -6,14 +6,11 @@ import ohos.agp.components.Component;
 import ohos.agp.components.Picker;
 import ohos.agp.utils.Color;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
 
-import static com.sithagi.universalpickerdialog.UniversalPickerDialog.applyBackgroundColor;
-
-
+/**
+ * custom picker for UniversalPickerDialog.
+ */
 public class MaterialNumberPicker extends Picker {
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0x00201, "-MainAbility-");
 
     //#region default values
     private static final int MIN_VALUE = 1;
@@ -22,17 +19,19 @@ public class MaterialNumberPicker extends Picker {
     private static final int TEXT_SIZE = 24;
     private static final Color TEXT_COLOR = Color.BLACK;
     private static final Color BACKGROUND_COLOR = Color.WHITE;
-    private static final Color SEPARATOR_COLOR = Color.TRANSPARENT;
     //#endregion default values
     //#region param
     private Builder mBuilder;
     private int mTextColor;
     private float mTextSize;
-    private int mSeparatorColor;
-    private boolean mEnableFocusability;
     //#endregion param
 
 
+    /**
+     * constructor call for the material number picker.
+     *
+     * @param builder builder object to build the popup with custom properties
+     */
     public MaterialNumberPicker(Builder builder) {
         super(builder.context);
         initViews();
@@ -51,22 +50,40 @@ public class MaterialNumberPicker extends Picker {
         setWheelModeEnabled(builder.wrapSelectorWheel);
         setFocusable(builder.enableFocusability ? Component.FOCUS_ENABLE : Component.FOCUS_DISABLE);
 
-        applyBackgroundColor(this, builder.backgroundColor);
+        UniversalPickerDialog.applyBackgroundColor(this, builder.backgroundColor);
 
     }
 
 
+    /**
+     *  override this constructor to init the picker with default style.
+     *
+     * @param context builder context
+     * @param attrSet attributes
+     * @noinspection checkstyle:SingleLineJavadoc, CheckStyle, unused
+     */
     public MaterialNumberPicker(Builder context, AttrSet attrSet) {
         super(context.context, attrSet);
         initViews();
     }
 
+    /**
+     *  override this constructor to init the picker with default style.
+     *
+     * @param context builder context
+     * @param attrSet attributes
+     * @param styleName styleName
+     * @noinspection checkstyle:SingleLineJavadoc, CheckStyle, unused
+     */
     public MaterialNumberPicker(Builder context, AttrSet attrSet, String styleName) {
         super(context.context, attrSet, styleName);
         initViews();
 
     }
 
+    /**
+     * initialize the picker with default values.
+     */
     public void initViews() {
         setMinValue(MIN_VALUE);
         setMaxValue(MAX_VALUE);
@@ -80,7 +97,7 @@ public class MaterialNumberPicker extends Picker {
         setWheelModeEnabled(false);
         setFocusable(Component.FOCUS_DISABLE);
 
-        applyBackgroundColor(this, BACKGROUND_COLOR);
+        UniversalPickerDialog.applyBackgroundColor(this, BACKGROUND_COLOR);
 
     }
 
@@ -118,9 +135,12 @@ public class MaterialNumberPicker extends Picker {
 
     //#endregion methods
 
+    //#region builder
     /**
+     * builder class to configure the popup.
+     *
      * @noinspection UnusedReturnValue
-     */ //#region builder
+     */
     public static class Builder {
         private Context context;
         private Formatter formatter;

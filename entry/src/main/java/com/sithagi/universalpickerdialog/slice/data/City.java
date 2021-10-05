@@ -1,12 +1,12 @@
 package com.sithagi.universalpickerdialog.slice.data;
 
-/*
- * Created by troy379 on 23.08.16.
+/**
+ * city data model.
  */
 public class City {
 
-    private String name;
-    private String country;
+    private final String name;
+    private final String country;
 
     public City(String name, String country) {
         this.name = name;
