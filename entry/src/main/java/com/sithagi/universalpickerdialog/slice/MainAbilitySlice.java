@@ -2,6 +2,7 @@ package com.sithagi.universalpickerdialog.slice;
 
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
+import ohos.agp.colors.RgbColor;
 import ohos.agp.utils.Color;
 import ohos.agp.window.dialog.ToastDialog;
 import com.sithagi.universalpickerdialog.ResourceTable;
@@ -9,6 +10,7 @@ import com.sithagi.universalpickerdialog.UniversalPickerDialog;
 import com.sithagi.universalpickerdialog.slice.data.City;
 import com.sithagi.universalpickerdialog.slice.data.Developer;
 import com.sithagi.universalpickerdialog.slice.data.FakeData;
+
 import java.util.ArrayList;
 
 /**
@@ -30,24 +32,32 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
         levels = FakeData.getDeveloperLevels();
         specializations = FakeData.getDeveloperSpecializations();
 
-        findComponentById(ResourceTable.Id_singlePickDialogButton).setClickedListener(c -> showCustomizedPicker(
-                "Pick A city: ",
-                KEY_SINGLE_PICK,
-                new UniversalPickerDialog.Input(0, citiesList)));
-        findComponentById(ResourceTable.Id_multiPickDialogButton).setClickedListener(v -> showCustomizedPicker(
-                "Configure developer specs:",
-                KEY_MULTI_PICK,
-                new UniversalPickerDialog.Input(2, levels),
-                new UniversalPickerDialog.Input(0, specializations),
-                getFormattedCitiesInput()
-        ));
-        findComponentById(ResourceTable.Id_multiPickDefaultDialogButton).setClickedListener(c -> showDefaultPicker(
-                "Multi pick Default Style: ",
-                KEY_MULTI_PICK,
-                new UniversalPickerDialog.Input(2, levels),
-                new UniversalPickerDialog.Input(0, specializations),
-                getFormattedCitiesInput()
-        ));
+        findComponentById(ResourceTable.Id_singlePickDialogButton).setClickedListener(
+                c -> showCustomizedPicker(
+                        "Pick A city to continue: ",
+                        KEY_SINGLE_PICK,
+                        new UniversalPickerDialog.Input(0, citiesList)
+                )
+        );
+
+        findComponentById(ResourceTable.Id_multiPickDialogButton).setClickedListener(
+                c -> showCustomizedPicker(
+                        "Configure developer specs:",
+                        KEY_MULTI_PICK,
+                        new UniversalPickerDialog.Input(2, levels),
+                        new UniversalPickerDialog.Input(0, specializations),
+                        getFormattedCitiesInput()
+                )
+        );
+        findComponentById(ResourceTable.Id_multiPickDefaultDialogButton).setClickedListener(
+                c -> showDefaultPicker(
+                        "Multi pick Default Style: ",
+                        KEY_MULTI_PICK,
+                        new UniversalPickerDialog.Input(2, levels),
+                        new UniversalPickerDialog.Input(0, specializations),
+                        getFormattedCitiesInput()
+                )
+        );
     }
 
     private UniversalPickerDialog.Input getFormattedCitiesInput() {
@@ -62,8 +72,10 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
                 .setTitle(title)
                 .setPositiveButtonText("Ok")
                 .setNegativeButtonText("Cancel")
-                .setPositiveButtonColor(Color.GREEN)
-                .setNegativeButtonColor(Color.RED)
+                .setTitleColor(new Color(Color.rgb(255, 87, 34)))
+                .setPositiveButtonColor(new Color(Color.rgb(255, 87, 34)))
+                .setBackgroundColor(new Color(Color.rgb(111, 112, 111)))
+                .setContentTextColor(new Color(Color.rgb(255, 255, 255)))
                 .setContentTextSize(24)
                 .setListener(this)
                 .setInputs(inputs)
@@ -92,7 +104,7 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
 
     @Override
     public void onPick(int[] selectedValues, int key) {
-        String result = "";
+        String result;
 
         switch (key) {
             case KEY_SINGLE_PICK:

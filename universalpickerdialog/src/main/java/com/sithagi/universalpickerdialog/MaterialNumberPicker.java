@@ -43,6 +43,7 @@ public class MaterialNumberPicker extends Picker {
         setValue(builder.defaultValue);
 
         setNormalTextColor(builder.textColor);
+        setSelectedTextColor(builder.textColor);
         setNormalTextSize((int) fpToPixels(getContext(), builder.textSize));
         setSelectedTextSize((int) fpToPixels(getContext(), (float) (builder.textSize * 1.2)));
 
@@ -90,6 +91,7 @@ public class MaterialNumberPicker extends Picker {
         setValue(DEFAULT_VALUE);
 
         setNormalTextColor(TEXT_COLOR);
+        setSelectedTextColor(TEXT_COLOR);
         setNormalTextSize(TEXT_SIZE);
         setSelectedTextSize((int) (TEXT_SIZE * 1.2));
 

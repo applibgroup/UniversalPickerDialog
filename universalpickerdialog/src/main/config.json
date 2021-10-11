@@ -12,11 +12,7 @@
   "module": {
     "package": "com.sithagi.universalpickerdialog",
     "deviceType": [
-      "phone",
-      "tablet",
-      "tv",
-      "wearable",
-      "car"
+      "default"
     ],
     "distro": {
       "deliveryWithInstall": true,
