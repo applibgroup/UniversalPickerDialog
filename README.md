@@ -5,9 +5,9 @@ HMOS 3rd party library to make implementing Dialog more easier. It includes two 
 
 ### Screenshots
 ---
-![Single picker](https://github.com/applibgroup/UniversalPickerDialog/blob/main/images/single.png?raw=true)
-![Multi picker](https://github.com/applibgroup/UniversalPickerDialog/blob/main/images/multi.png?raw=true)
-![Default Style](https://github.com/applibgroup/UniversalPickerDialog/blob/main/images/default.png?raw=true)
+![Single picker](https://github.com/prasanta352/UniversalPickerDialog-1/blob/main/images/single.png?raw=true)
+![Multi picker](https://github.com/prasanta352/UniversalPickerDialog-1/blob/main/images/multi.png?raw=true)
+![Default Style](https://github.com/prasanta352/UniversalPickerDialog-1/blob/main/images/default.png?raw=true)
 
 
 ### Source
