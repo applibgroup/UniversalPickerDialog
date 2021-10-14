@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DirectionalLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:height="match_parent"
+    ohos:width="match_parent"
+    ohos:orientation="vertical"
+    ohos:top_padding="16vp"
+    ohos:left_padding="16vp"
+    ohos:right_padding="16vp"
+    >
+
+    <Button
+
+        ohos:text_size="29fp"
+        ohos:id="$+id:singlePickDialogButton"
+        ohos:width="match_parent"
+        ohos:height="match_content"
+        ohos:text="Single pick"
+        ohos:background_element="#FF5722"
+        ohos:text_color="#ffffff"
+        ohos:padding="8fp"
+        ohos:margin="8fp"
+
+        />
+
+    <Button
+        ohos:text_size="29fp"
+        ohos:id="$+id:multiPickDialogButton"
+        ohos:width="match_parent"
+        ohos:height="match_content"
+        ohos:text="Multi pick"
+        ohos:background_element="#FF5722"
+        ohos:text_color="#ffffff"
+        ohos:padding="8fp"
+        ohos:margin="8fp"/>
+
+    <Button
+
+        ohos:text_size="29fp"
+        ohos:id="$+id:multiPickDefaultDialogButton"
+        ohos:width="match_parent"
+        ohos:height="match_content"
+        ohos:text="Multi pick (Default style)"
+        ohos:background_element="#FF5722"
+        ohos:text_color="#ffffff"
+        ohos:padding="8fp"
+        ohos:margin="8fp"/>
+
+
+</DirectionalLayout>

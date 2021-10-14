@@ -1,34 +1,33 @@
 # UniversalPickerDialog
-Customizable dialog with auto generated pickers inside that depend on the dataset count.
+HMOS 3rd party library to make implementing Dialog more easier. It includes two abilities :
+1. Single Picker 
+2. Multi picker
 
-![alt tag](images/picker_dialog_demo.gif)
+### Screenshots
+---
+![Screenshots](https://github.com/prasanta352/UniversalPickerDialog-1/blob/main/images/all.png?raw=true)
 
-### Who we are
-Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio) and see more libraries from [stfalcon-studio](https://stfalcon-studio.github.io/).
 
-### Download
+### Source
+---
+This library has been inspired by [stfalcon-studio/UniversalPickerDialog](https://github.com/stfalcon-studio/UniversalPickerDialog)
 
-Download via Gradle:
-```gradle
-compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
-```
-
-or Maven:
-```xml
-<dependency>
-  <groupId>com.github.stfalcon</groupId>
-  <artifactId>universalpickerdialog</artifactId>
-  <version>0.1.0</version>
-  <type>pom</type>
-</dependency>
-```
-
-### Usage
-
-Implement callback interface:
+### Integration
+---
+1. For using UniversalPickerDialog module in sample app, include the source code and add the below dependencies in entry/build.gradle to generate hap/support.har.
+    ```groovy
+    implementation project(path: ':universalpickerdialog')
+    ```
+2. For using UniversalPickerDialog module in separate application using har file, add the har file in the entry/libs folder and add the dependencies in entry/build.gradle file.
+    ```groovy
+   implementation fileTree(dir: 'libs', include: ['*.har'])
+   ```
+### Usages
+---
+implement callback interfaces:
 ```java
-public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener, UniversalPickerDialog.OnPickListener {
+public class MainAbilitySlice extends AbilitySlice implements ListContainer.ItemClickedListener,
+        UniversalPickerDialog.OnPickListener {
 ```
 
 Then implement OnPickListener.onPick(int[], int) method:
@@ -43,9 +42,10 @@ public void onPick(int[] selectedValues, int key) {
 ```
 
 Now you can build the dialog and show it. Just add these few lines:
+
 ```java
 new UniversalPickerDialog.Builder(this)
-                .setTitle(R.string.hello)
+                .setTitle("UniversalPickerDialog")
                 .setListener(this)
                 .setInputs(
                         new UniversalPickerDialog.Input(0, list),
@@ -53,59 +53,20 @@ new UniversalPickerDialog.Builder(this)
                 )
                 .show();
 ```
-Data set is passing to Picker using Input class that supports lists as well as arrays, so no data conversion is required :)).
-It takes in constructor default item position in carousel as the first argument and data set as the second.
 
-Builder was extended by a many methods for more flexibility and convenience of use.
-Here's the full list (you can find the javadoc on each of these methods):
-```java
-new UniversalPickerDialog.Builder(this)
-                .setTitle(R.string.hello)
-                .setTitle("Hello!")
-                .setTitleColorRes(R.color.green)
-                .setTitleColor(Color.GREEN)
-                .setBackgroundColorRes(R.color.white)
-                .setBackgroundColor(Color.WHITE)
-                .setContentTextColorRes(R.color.green)
-                .setContentTextColor(Color.GREEN)
-                .setPositiveButtonText(R.string.yep)
-                .setPositiveButtonText("Yep!")
-                .setNegativeButtonText(R.string.nope)
-                .setNegativeButtonText("Nope!")
-                .setButtonsColor(R.color.green)
-                .setButtonsColorRes(Color.GREEN)
-                .setPositiveButtonColorRes(R.color.green)
-                .setPositiveButtonColor(Color.GREEN)
-                .setNegativeButtonColorRes(R.color.red)
-                .setNegativeButtonColor(Color.RED)
-                .setContentTextSize(16)
-                .setListener(this)
-                .setInputs(
-                        new UniversalPickerDialog.Input(2, list),
-                        new UniversalPickerDialog.Input(0, array)
-                )
-                .setKey(123)
-                .build()
-                .show();
-```
+Check the example app for more information.
 
-Take a look at the [sample project](https://github.com/stfalcon-studio/UniversalPickerDialog/tree/master/sample) for more information.
 
-### License
-
-```
-Copyright (C) 2017 stfalcon.com
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-```
+<h1><a id="user-content-license" class="anchor" aria-hidden="true" href="#license"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>License</h1>
+<blockquote>
+<p>Copyright 2016 mzelzoghbi</p>
+</blockquote>
+<blockquote>
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+</blockquote>
+<blockquote>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0" rel="nofollow">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</blockquote>
+<blockquote>
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+</blockquote>
