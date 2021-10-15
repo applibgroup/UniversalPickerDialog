@@ -2,15 +2,13 @@ package com.sithagi.universalpickerdialog.slice;
 
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
-import ohos.agp.colors.RgbColor;
 import ohos.agp.utils.Color;
 import ohos.agp.window.dialog.ToastDialog;
 import com.sithagi.universalpickerdialog.ResourceTable;
 import com.sithagi.universalpickerdialog.UniversalPickerDialog;
 import com.sithagi.universalpickerdialog.slice.data.City;
 import com.sithagi.universalpickerdialog.slice.data.Developer;
-import com.sithagi.universalpickerdialog.slice.data.FakeData;
-
+import com.sithagi.universalpickerdialog.slice.data.FakeDataBuilder;
 import java.util.ArrayList;
 
 /**
@@ -28,9 +26,9 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
     public void onStart(Intent intent) {
         super.onStart(intent);
         super.setUIContent(ResourceTable.Layout_ability_main);
-        citiesList = FakeData.getCitiesList();
-        levels = FakeData.getDeveloperLevels();
-        specializations = FakeData.getDeveloperSpecializations();
+        citiesList = FakeDataBuilder.getCitiesList();
+        levels = FakeDataBuilder.getDeveloperLevels();
+        specializations = FakeDataBuilder.getDeveloperSpecializations();
 
         findComponentById(ResourceTable.Id_singlePickDialogButton).setClickedListener(
                 c -> showCustomizedPicker(
@@ -72,10 +70,10 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
                 .setTitle(title)
                 .setPositiveButtonText("Ok")
                 .setNegativeButtonText("Cancel")
-                .setTitleColor(new Color(Color.rgb(255, 87, 34)))
-                .setPositiveButtonColor(new Color(Color.rgb(255, 87, 34)))
-                .setBackgroundColor(new Color(Color.rgb(111, 112, 111)))
-                .setContentTextColor(new Color(Color.rgb(255, 255, 255)))
+                .setTitleColor(Color.YELLOW)
+                .setPositiveButtonColor(Color.YELLOW)
+                .setBackgroundColor(Color.LTGRAY)
+                .setContentTextColor(Color.WHITE)
                 .setContentTextSize(24)
                 .setListener(this)
                 .setInputs(inputs)

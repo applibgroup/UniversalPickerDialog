@@ -1,5 +1,22 @@
+/*
+ * Copyright (C) 2016 Alexander Krol stfalcon.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sithagi.universalpickerdialog;
 
+import static com.sithagi.universalpickerdialog.Utils.fpToPixels;
 import ohos.agp.colors.RgbColor;
 import ohos.agp.components.AttrHelper;
 import ohos.agp.components.Button;
@@ -165,7 +182,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
     public DirectionalLayout createBottomActionBar() {
         final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
         final int paddingVertical = AttrHelper.vp2px(12, builder.context);
-        final int btnTextSize = (int) MaterialNumberPicker.fpToPixels(builder.context, Builder.ACTION_BTN_SIZE);
+        final int btnTextSize = fpToPixels(builder.context, Builder.ACTION_BTN_SIZE);
 
         DirectionalLayout bottomLayout = new DirectionalLayout(builder.context);
 
@@ -394,7 +411,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         private Color titleColor = Color.BLACK;
         private Color backgroundColor;
         private Color contentTextColor;
-        private float contentTextSize;
+        private int contentTextSize;
         private int key;
         private String title;
         private String negativeButtonText;
@@ -558,7 +575,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          * @param size text size
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setContentTextSize(float size) {
+        public Builder setContentTextSize(int size) {
             this.contentTextSize = size;
             return this;
         }

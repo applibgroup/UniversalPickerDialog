@@ -1,11 +1,29 @@
+/*
+ * Copyright (C) 2015 Kasual Business
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sithagi.universalpickerdialog;
 
-import ohos.agp.components.AttrHelper;
+import static com.sithagi.universalpickerdialog.Utils.fpToPixels;
+import static com.sithagi.universalpickerdialog.Utils.pixelsToFp;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.agp.components.Picker;
 import ohos.agp.utils.Color;
 import ohos.app.Context;
+
 
 /**
  * custom picker for UniversalPickerDialog.
@@ -23,7 +41,7 @@ public class MaterialNumberPicker extends Picker {
     //#region param
     private Builder mBuilder;
     private int mTextColor;
-    private float mTextSize;
+    private int mTextSize;
     //#endregion param
 
 
@@ -44,8 +62,8 @@ public class MaterialNumberPicker extends Picker {
 
         setNormalTextColor(builder.textColor);
         setSelectedTextColor(builder.textColor);
-        setNormalTextSize((int) fpToPixels(getContext(), builder.textSize));
-        setSelectedTextSize((int) fpToPixels(getContext(), (float) (builder.textSize * 1.2)));
+        setNormalTextSize(fpToPixels(getContext(), builder.textSize));
+        setSelectedTextSize(fpToPixels(getContext(), (int) (builder.textSize * 1.2)));
 
         setFormatter(builder.formatter);
         setWheelModeEnabled(builder.wrapSelectorWheel);
@@ -110,7 +128,7 @@ public class MaterialNumberPicker extends Picker {
         updateTextAttributes();
     }
 
-    public void setTextSize(float textSize) {
+    public void setTextSize(int textSize) {
         mTextSize = textSize;
         updateTextAttributes();
     }
@@ -119,15 +137,6 @@ public class MaterialNumberPicker extends Picker {
     private void updateTextAttributes() {
         setTextColor(mTextColor);
         setTextSize(pixelsToFp(getContext(), mTextSize));
-    }
-
-
-    public static float pixelsToFp(Context context, float px) {
-        return px / AttrHelper.getDensity(context);
-    }
-
-    public static float fpToPixels(Context context, float sp) {
-        return AttrHelper.fp2px(sp, context);
     }
 
     @Override
@@ -148,7 +157,7 @@ public class MaterialNumberPicker extends Picker {
         private Formatter formatter;
         private Color backgroundColor = BACKGROUND_COLOR;
         private Color textColor = TEXT_COLOR;
-        private float textSize = TEXT_SIZE;
+        private int textSize = TEXT_SIZE;
         private int minValue = MIN_VALUE;
         private int maxValue = MAX_VALUE;
         private int defaultValue = DEFAULT_VALUE;
@@ -174,7 +183,7 @@ public class MaterialNumberPicker extends Picker {
             return this;
         }
 
-        public Builder textSize(float textSize) {
+        public Builder textSize(int textSize) {
             this.textSize = textSize;
             return this;
         }
