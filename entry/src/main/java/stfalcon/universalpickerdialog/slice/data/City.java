@@ -1,4 +1,4 @@
-package com.sithagi.universalpickerdialog.slice.data;
+package stfalcon.universalpickerdialog.slice.data;
 
 /**
  * city data model.

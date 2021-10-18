@@ -1,4 +1,4 @@
-package com.sithagi.universalpickerdialog;
+package stfalcon.universalpickerdialog;
 
 import org.junit.Test;
 

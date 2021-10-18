@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sithagi.universalpickerdialog;
+package stfalcon.universalpickerdialog;
 
 import ohos.agp.colors.RgbColor;
 import ohos.agp.components.AttrHelper;
@@ -30,7 +30,6 @@ import ohos.agp.utils.LayoutAlignment;
 import ohos.agp.window.dialog.BaseDialog;
 import ohos.agp.window.dialog.CommonDialog;
 import ohos.app.Context;
-
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;

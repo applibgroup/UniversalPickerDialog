@@ -1,4 +1,4 @@
-package com.sithagi.universalpickerdialog;
+package stfalcon.universalpickerdialog;
 
 import ohos.aafwk.ability.delegation.AbilityDelegatorRegistry;
 import org.junit.Test;
@@ -9,6 +9,6 @@ public class ExampleOhosTest {
     @Test
     public void testBundleName() {
         final String actualBundleName = AbilityDelegatorRegistry.getArguments().getTestBundleName();
-        assertEquals("com.sithagi.universalpickerdialog", actualBundleName);
+        assertEquals("stfalcon.universalpickerdialog", actualBundleName);
     }
 }

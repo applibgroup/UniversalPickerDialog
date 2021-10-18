@@ -1,7 +1,7 @@
 {
   "app": {
-    "bundleName": "com.sithagi.universalpickerdialog",
-    "vendor": "sithagi",
+    "bundleName": "stfalcon.universalpickerdialog",
+    "vendor": "universalpickerdialog",
     "version": {
       "code": 1000000,
       "name": "1.0.0"
@@ -9,9 +9,9 @@
   },
   "deviceConfig": {},
   "module": {
-    "package": "com.sithagi.universalpickerdialog",
+    "package": "stfalcon.universalpickerdialog",
     "name": ".MyApplication",
-    "mainAbility": "com.sithagi.universalpickerdialog.MainAbility",
+    "mainAbility": "stfalcon.universalpickerdialog.MainAbility",
     "deviceType": [
       "phone",
       "tablet",
@@ -38,7 +38,7 @@
           }
         ],
         "orientation": "unspecified",
-        "name": "com.sithagi.universalpickerdialog.MainAbility",
+        "name": "stfalcon.universalpickerdialog.MainAbility",
         "icon": "$media:icon",
         "description": "$string:mainability_description",
         "label": "$string:entry_MainAbility",

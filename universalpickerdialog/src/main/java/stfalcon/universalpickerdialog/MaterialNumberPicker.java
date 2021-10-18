@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sithagi.universalpickerdialog;
+package stfalcon.universalpickerdialog;
 
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;

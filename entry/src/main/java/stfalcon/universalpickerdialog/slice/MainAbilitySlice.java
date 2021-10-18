@@ -1,15 +1,14 @@
-package com.sithagi.universalpickerdialog.slice;
+package stfalcon.universalpickerdialog.slice;
 
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.utils.Color;
 import ohos.agp.window.dialog.ToastDialog;
-import com.sithagi.universalpickerdialog.ResourceTable;
-import com.sithagi.universalpickerdialog.UniversalPickerDialog;
-import com.sithagi.universalpickerdialog.slice.data.City;
-import com.sithagi.universalpickerdialog.slice.data.Developer;
-import com.sithagi.universalpickerdialog.slice.data.SampleDataBuilder;
-
+import stfalcon.universalpickerdialog.ResourceTable;
+import stfalcon.universalpickerdialog.UniversalPickerDialog;
+import stfalcon.universalpickerdialog.slice.data.City;
+import stfalcon.universalpickerdialog.slice.data.Developer;
+import stfalcon.universalpickerdialog.slice.data.SampleDataBuilder;
 import java.util.ArrayList;
 
 /**

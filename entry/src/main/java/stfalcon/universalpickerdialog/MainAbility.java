@@ -1,8 +1,8 @@
-package com.sithagi.universalpickerdialog;
+package stfalcon.universalpickerdialog;
 
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
-import com.sithagi.universalpickerdialog.slice.MainAbilitySlice;
+import stfalcon.universalpickerdialog.slice.MainAbilitySlice;
 
 /**
  * MainAbility.
