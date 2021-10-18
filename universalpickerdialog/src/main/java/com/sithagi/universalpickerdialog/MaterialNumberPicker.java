@@ -16,8 +16,6 @@
 
 package com.sithagi.universalpickerdialog;
 
-import static com.sithagi.universalpickerdialog.Utils.fpToPixels;
-import static com.sithagi.universalpickerdialog.Utils.pixelsToFp;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.agp.components.Picker;
@@ -39,6 +37,7 @@ public class MaterialNumberPicker extends Picker {
     private static final Color BACKGROUND_COLOR = Color.WHITE;
     //#endregion default values
     //#region param
+    FpCalculationUtil fpCalculationUtil;
     private Builder mBuilder;
     private int mTextColor;
     private int mTextSize;
@@ -53,6 +52,7 @@ public class MaterialNumberPicker extends Picker {
     public MaterialNumberPicker(Builder builder) {
         super(builder.context);
         initViews();
+        fpCalculationUtil = new FpCalculationUtil(getContext());
 
         mBuilder = builder;
 
@@ -62,8 +62,8 @@ public class MaterialNumberPicker extends Picker {
 
         setNormalTextColor(builder.textColor);
         setSelectedTextColor(builder.textColor);
-        setNormalTextSize(fpToPixels(getContext(), builder.textSize));
-        setSelectedTextSize(fpToPixels(getContext(), (int) (builder.textSize * 1.2)));
+        setNormalTextSize(fpCalculationUtil.fpToPixels(builder.textSize));
+        setSelectedTextSize(fpCalculationUtil.fpToPixels((int) (builder.textSize * 1.2)));
 
         setFormatter(builder.formatter);
         setWheelModeEnabled(builder.wrapSelectorWheel);
@@ -136,7 +136,7 @@ public class MaterialNumberPicker extends Picker {
     // functional methods
     private void updateTextAttributes() {
         setTextColor(mTextColor);
-        setTextSize(pixelsToFp(getContext(), mTextSize));
+        setTextSize(fpCalculationUtil.pixelsToFp(mTextSize));
     }
 
     @Override

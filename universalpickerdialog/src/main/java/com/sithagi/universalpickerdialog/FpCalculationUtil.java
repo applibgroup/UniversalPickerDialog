@@ -4,29 +4,33 @@ import ohos.agp.components.AttrHelper;
 import ohos.app.Context;
 
 /**
- * Utility class for helper methods.
+ * Utility class for converting between pixel value & font pixel(fp) value.
  */
-public class Utils {
+public class FpCalculationUtil {
+    public Context context;
+
+    public FpCalculationUtil(Context context) {
+        super();
+        this.context = context;
+    }
+
     /**
      * convert pixel value to fp value.
      *
-     * @param context application context
      * @param px      pixel value
      * @return fp
      */
-    public static int pixelsToFp(Context context, int px) {
+    public int pixelsToFp(int px) {
         return (int) (px / AttrHelper.getDensity(context));
     }
 
     /**
      * convert fp to pixel value.
      *
-     * @param context application context
      * @param fp      fp
      * @return pixel
      */
-    public static int fpToPixels(Context context, int fp) {
-        return AttrHelper.fp2px(fp, context);
+    public int fpToPixels( int fp) { return AttrHelper.fp2px(fp, context);
     }
 
 }

@@ -8,7 +8,7 @@ import com.sithagi.universalpickerdialog.ResourceTable;
 import com.sithagi.universalpickerdialog.UniversalPickerDialog;
 import com.sithagi.universalpickerdialog.slice.data.City;
 import com.sithagi.universalpickerdialog.slice.data.Developer;
-import com.sithagi.universalpickerdialog.slice.data.FakeDataBuilder;
+import com.sithagi.universalpickerdialog.slice.data.SampleDataBuilder;
 import java.util.ArrayList;
 
 /**
@@ -26,9 +26,9 @@ public class MainAbilitySlice extends AbilitySlice implements UniversalPickerDia
     public void onStart(Intent intent) {
         super.onStart(intent);
         super.setUIContent(ResourceTable.Layout_ability_main);
-        citiesList = FakeDataBuilder.getCitiesList();
-        levels = FakeDataBuilder.getDeveloperLevels();
-        specializations = FakeDataBuilder.getDeveloperSpecializations();
+        citiesList = SampleDataBuilder.getCitiesList();
+        levels = SampleDataBuilder.getDeveloperLevels();
+        specializations = SampleDataBuilder.getDeveloperSpecializations();
 
         findComponentById(ResourceTable.Id_singlePickDialogButton).setClickedListener(
                 c -> showCustomizedPicker(

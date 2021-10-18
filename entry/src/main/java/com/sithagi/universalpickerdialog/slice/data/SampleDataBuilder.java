@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * FakeData data model.
  */
-public final class FakeDataBuilder {
-    private FakeDataBuilder() {
+public final class SampleDataBuilder {
+    private SampleDataBuilder() {
         throw new AssertionError();
     }
 

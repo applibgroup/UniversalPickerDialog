@@ -16,7 +16,6 @@
 
 package com.sithagi.universalpickerdialog;
 
-import static com.sithagi.universalpickerdialog.Utils.fpToPixels;
 import ohos.agp.colors.RgbColor;
 import ohos.agp.components.AttrHelper;
 import ohos.agp.components.Button;
@@ -42,6 +41,7 @@ import java.util.Arrays;
 public class UniversalPickerDialog implements BaseDialog.DialogListener {
 
     //#region parameters
+    private FpCalculationUtil fpCalculationUtil;
     protected Builder builder;
     protected ArrayList<MaterialNumberPicker> pickers;
     protected CommonDialog dialog;
@@ -121,7 +121,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         component.setBackground(shapeElement);
     }
 
-
+    //#endregion implementations
     //#region create layout for the dialog
 
     /**
@@ -182,7 +182,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
     public DirectionalLayout createBottomActionBar() {
         final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
         final int paddingVertical = AttrHelper.vp2px(12, builder.context);
-        final int btnTextSize = fpToPixels(builder.context, Builder.ACTION_BTN_SIZE);
+        final int btnTextSize = fpCalculationUtil.fpToPixels(Builder.ACTION_BTN_SIZE);
 
         DirectionalLayout bottomLayout = new DirectionalLayout(builder.context);
 
@@ -333,6 +333,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      * @param builder builder
      */
     protected UniversalPickerDialog(Builder builder) {
+        fpCalculationUtil = new FpCalculationUtil(builder.context);
         this.builder = builder;
         initPickers(builder.inputs);
         createView();
