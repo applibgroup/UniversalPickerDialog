@@ -54,8 +54,42 @@ new UniversalPickerDialog.Builder(this)
                 .show();
 ```
 
-Check the example app for more information.
+Data set is passing to Picker using Input class that supports lists as well as arrays, so no data conversion is required :)). It takes in constructor default item position in carousel as the first argument and data set as the second.
 
+Builder was extended by a many methods for more flexibility and convenience of use. Here's the full list (you can find the javadoc on each of these methods):
+
+```java
+new UniversalPickerDialog.Builder(this)
+    .setTitle(ResourceTable.String_entry_MainAbility)
+    .setTitle("Hello!")
+    .setTitleColorRes(ResourceTable.Color_green)
+    .setTitleColor(Color.GREEN)
+    .setBackgroundColorRes(ResourceTable.Color_white)
+    .setBackgroundColor(Color.WHITE)
+    .setContentTextColorRes(ResourceTable.Color_green)
+    .setContentTextColor(Color.GREEN)
+    .setPositiveButtonText(ResourceTable.String_ok_text)
+    .setPositiveButtonText("Yep!")
+    .setNegativeButtonText(ResourceTable.String_cancel_text)
+    .setNegativeButtonText("Nope!")
+    .setButtonsColor(Color.GREEN)
+    .setButtonsColorRes(ResourceTable.Color_green)
+    .setPositiveButtonColorRes(ResourceTable.Color_green)
+    .setPositiveButtonColor(Color.GREEN)
+    .setNegativeButtonColorRes(ResourceTable.Color_red)
+    .setNegativeButtonColor(Color.RED)
+    .setContentTextSize(16)
+    .setListener(this)
+    .setInputs(
+        new UniversalPickerDialog.Input(2, list),
+        new UniversalPickerDialog.Input(0, array)
+    )
+    .setKey(123)
+    .build()
+    .show();
+```
+
+Take a look at the [sample project](entry) for more information.
 
 ### License
 

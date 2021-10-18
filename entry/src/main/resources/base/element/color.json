@@ -1,0 +1,16 @@
+{
+  "color": [
+    {
+      "name": "white",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "green",
+      "value": "#008000"
+    },
+    {
+      "name": "red",
+      "value": "#ff0000"
+    }
+  ]
+}
