@@ -75,7 +75,7 @@ public class MaterialNumberPicker extends Picker {
 
 
     /**
-     *  override this constructor to init the picker with default style.
+     * override this constructor to init the picker with default style.
      *
      * @param context builder context
      * @param attrSet attributes
@@ -87,10 +87,10 @@ public class MaterialNumberPicker extends Picker {
     }
 
     /**
-     *  override this constructor to init the picker with default style.
+     * override this constructor to init the picker with default style.
      *
-     * @param context builder context
-     * @param attrSet attributes
+     * @param context   builder context
+     * @param attrSet   attributes
      * @param styleName styleName
      * @noinspection checkstyle:SingleLineJavadoc, CheckStyle, unused
      */
@@ -147,6 +147,7 @@ public class MaterialNumberPicker extends Picker {
     //#endregion methods
 
     //#region builder
+
     /**
      * builder class to configure the popup.
      *

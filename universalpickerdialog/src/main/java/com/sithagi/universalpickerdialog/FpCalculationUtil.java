@@ -17,7 +17,7 @@ public class FpCalculationUtil {
     /**
      * convert pixel value to fp value.
      *
-     * @param px      pixel value
+     * @param px pixel value
      * @return fp
      */
     public int pixelsToFp(int px) {
@@ -27,10 +27,11 @@ public class FpCalculationUtil {
     /**
      * convert fp to pixel value.
      *
-     * @param fp      fp
+     * @param fp fp
      * @return pixel
      */
-    public int fpToPixels( int fp) { return AttrHelper.fp2px(fp, context);
+    public int fpToPixels(int fp) {
+        return AttrHelper.fp2px(fp, context);
     }
 
 }

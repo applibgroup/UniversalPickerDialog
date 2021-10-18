@@ -34,12 +34,12 @@ public final class SampleDataBuilder {
      * @return developer list by levels
      */
     public static Developer.Level[] getDeveloperLevels() {
-        return new Developer.Level[] {
-            new Developer.Level(0, "Trainee"),
-            new Developer.Level(1, "Junior"),
-            new Developer.Level(2, "Middle"),
-            new Developer.Level(3, "Senior"),
-            new Developer.Level(4, "Team leader")
+        return new Developer.Level[]{
+                new Developer.Level(0, "Trainee"),
+                new Developer.Level(1, "Junior"),
+                new Developer.Level(2, "Middle"),
+                new Developer.Level(3, "Senior"),
+                new Developer.Level(4, "Team leader")
         };
     }
 
@@ -49,12 +49,12 @@ public final class SampleDataBuilder {
      * @return developer list by Specialization
      */
     public static Developer.Specialization[] getDeveloperSpecializations() {
-        return new Developer.Specialization[] {
-            new Developer.Specialization(0, "Android"),
-            new Developer.Specialization(1, "iOS"),
-            new Developer.Specialization(2, "WP"),
-            new Developer.Specialization(3, "Front-end"),
-            new Developer.Specialization(4, "Back-end")
+        return new Developer.Specialization[]{
+                new Developer.Specialization(0, "Android"),
+                new Developer.Specialization(1, "iOS"),
+                new Developer.Specialization(2, "WP"),
+                new Developer.Specialization(3, "Front-end"),
+                new Developer.Specialization(4, "Back-end")
         };
     }
 }

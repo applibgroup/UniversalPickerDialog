@@ -30,6 +30,7 @@ import ohos.agp.utils.LayoutAlignment;
 import ohos.agp.window.dialog.BaseDialog;
 import ohos.agp.window.dialog.CommonDialog;
 import ohos.app.Context;
+
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -392,7 +393,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          * Called when data has been picked.
          *
          * @param selectedValues array with selected indices in the order in which {@link Input}s were added
-         * @param key key
+         * @param key            key
          */
         void onPick(int[] selectedValues, int key);
     }
@@ -661,7 +662,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          * Set {@link OnPickListener} for picker.
          *
          * @param listener listener
-         *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setListener(OnPickListener listener) {
