@@ -1,0 +1,23 @@
+{
+  "app": {
+    "bundleName": "stfalcon.universalpickerdialog",
+    "vendor": "universalpickerdialog",
+    "version": {
+      "code": 1000000,
+      "name": "1.0.0"
+    }
+  },
+  "deviceConfig": {
+  },
+  "module": {
+    "package": "stfalcon.universalpickerdialog",
+    "deviceType": [
+      "default"
+    ],
+    "distro": {
+      "deliveryWithInstall": true,
+      "moduleName": "universalpickerdialog",
+      "moduleType": "har"
+    }
+  }
+}

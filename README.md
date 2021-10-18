@@ -1,34 +1,33 @@
 # UniversalPickerDialog
-Customizable dialog with auto generated pickers inside that depend on the dataset count.
+HMOS 3rd party library to make implementing Dialog more easier. It includes two abilities :
+1. Single Picker 
+2. Multi picker
 
-![alt tag](images/picker_dialog_demo.gif)
+### Screenshots
+---
+![Screenshots](https://github.com/prasanta352/UniversalPickerDialog-1/blob/main/images/all.png?raw=true)
 
-### Who we are
-Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio) and see more libraries from [stfalcon-studio](https://stfalcon-studio.github.io/).
 
-### Download
+### Source
+---
+This library has been inspired by [stfalcon-studio/UniversalPickerDialog](https://github.com/stfalcon-studio/UniversalPickerDialog)
 
-Download via Gradle:
-```gradle
-compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
-```
-
-or Maven:
-```xml
-<dependency>
-  <groupId>com.github.stfalcon</groupId>
-  <artifactId>universalpickerdialog</artifactId>
-  <version>0.1.0</version>
-  <type>pom</type>
-</dependency>
-```
-
-### Usage
-
-Implement callback interface:
+### Integration
+---
+1. For using UniversalPickerDialog module in sample app, include the source code and add the below dependencies in entry/build.gradle to generate hap/support.har.
+    ```groovy
+    implementation project(path: ':universalpickerdialog')
+    ```
+2. For using UniversalPickerDialog module in separate application using har file, add the har file in the entry/libs folder and add the dependencies in entry/build.gradle file.
+    ```groovy
+   implementation fileTree(dir: 'libs', include: ['*.har'])
+   ```
+### Usages
+---
+implement callback interfaces:
 ```java
-public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener, UniversalPickerDialog.OnPickListener {
+public class MainAbilitySlice extends AbilitySlice implements ListContainer.ItemClickedListener,
+        UniversalPickerDialog.OnPickListener {
 ```
 
 Then implement OnPickListener.onPick(int[], int) method:
@@ -43,9 +42,10 @@ public void onPick(int[] selectedValues, int key) {
 ```
 
 Now you can build the dialog and show it. Just add these few lines:
+
 ```java
 new UniversalPickerDialog.Builder(this)
-                .setTitle(R.string.hello)
+                .setTitle("UniversalPickerDialog")
                 .setListener(this)
                 .setInputs(
                         new UniversalPickerDialog.Input(0, list),
@@ -53,43 +53,9 @@ new UniversalPickerDialog.Builder(this)
                 )
                 .show();
 ```
-Data set is passing to Picker using Input class that supports lists as well as arrays, so no data conversion is required :)).
-It takes in constructor default item position in carousel as the first argument and data set as the second.
 
-Builder was extended by a many methods for more flexibility and convenience of use.
-Here's the full list (you can find the javadoc on each of these methods):
-```java
-new UniversalPickerDialog.Builder(this)
-                .setTitle(R.string.hello)
-                .setTitle("Hello!")
-                .setTitleColorRes(R.color.green)
-                .setTitleColor(Color.GREEN)
-                .setBackgroundColorRes(R.color.white)
-                .setBackgroundColor(Color.WHITE)
-                .setContentTextColorRes(R.color.green)
-                .setContentTextColor(Color.GREEN)
-                .setPositiveButtonText(R.string.yep)
-                .setPositiveButtonText("Yep!")
-                .setNegativeButtonText(R.string.nope)
-                .setNegativeButtonText("Nope!")
-                .setButtonsColor(R.color.green)
-                .setButtonsColorRes(Color.GREEN)
-                .setPositiveButtonColorRes(R.color.green)
-                .setPositiveButtonColor(Color.GREEN)
-                .setNegativeButtonColorRes(R.color.red)
-                .setNegativeButtonColor(Color.RED)
-                .setContentTextSize(16)
-                .setListener(this)
-                .setInputs(
-                        new UniversalPickerDialog.Input(2, list),
-                        new UniversalPickerDialog.Input(0, array)
-                )
-                .setKey(123)
-                .build()
-                .show();
-```
+Check the example app for more information.
 
-Take a look at the [sample project](https://github.com/stfalcon-studio/UniversalPickerDialog/tree/master/sample) for more information.
 
 ### License
 

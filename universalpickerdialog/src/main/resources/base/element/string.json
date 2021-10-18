@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "universalpickerdialog_library",
+      "value": "universalpickerdialog_library"
+    },
+    {
+      "name": "cancel_text",
+      "value": "Cancel"
+    },
+    {
+      "name": "ok_text",
+      "value": "Ok"
+    }
+  ]
+}

@@ -16,58 +16,63 @@
 
 package stfalcon.universalpickerdialog;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-
+import ohos.agp.colors.RgbColor;
+import ohos.agp.components.AttrHelper;
+import ohos.agp.components.Button;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.DirectionalLayout;
+import ohos.agp.components.Picker;
+import ohos.agp.components.Text;
+import ohos.agp.components.element.ShapeElement;
+import ohos.agp.utils.Color;
+import ohos.agp.utils.LayoutAlignment;
+import ohos.agp.window.dialog.BaseDialog;
+import ohos.agp.window.dialog.CommonDialog;
+import ohos.app.Context;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*
- * Created by troy379 on 23.08.16.
- */
-public class UniversalPickerDialog
-        implements DialogInterface.OnShowListener {
 
+/**
+ * UniversalPickerDialog.
+ */
+public class UniversalPickerDialog implements BaseDialog.DialogListener {
+
+    //#region parameters
+    private FpCalculationUtil fpCalculationUtil;
     protected Builder builder;
     protected ArrayList<MaterialNumberPicker> pickers;
-    protected AlertDialog dialog;
-    private LinearLayout layout;
+    protected CommonDialog dialog;
+    private DirectionalLayout layout;
 
-    protected UniversalPickerDialog(Builder builder) {
-        this.builder = builder;
+    //#endregion parameters
 
-        initPickers(builder.inputs);
-        createView();
-        createDialog();
-    }
+    //#region implementations
 
     /**
-     * Displays the dialog
-     * */
+     * Displays the dialog.
+     */
     public void show() {
-        dialog.show();
+        this.dialog.show();
     }
 
     /**
-     * Cancel the dialog
-     * */
+     * Cancel the dialog.
+     */
     public void cancel() {
-        dialog.cancel();
+        // NOTE: should we destroy the dialog when the cancel is called ?
+        dialog.hide();
     }
 
-    private void initPickers(Input... inputs) {
+
+    /**
+     * init the picker with given inputs.
+     *
+     * @param inputs inputs
+     */
+    public void initPickers(Input... inputs) {
         this.pickers = new ArrayList<>();
         if (inputs != null) {
             for (Input input : inputs) {
@@ -76,334 +81,502 @@ public class UniversalPickerDialog
         }
     }
 
-    private MaterialNumberPicker
-    getPicker(final Input input) {
-        MaterialNumberPicker.Builder builder = new MaterialNumberPicker.Builder(this.builder.context);
-        builder.minValue(0);
-        builder.maxValue(input.list.size() - 1);
-        builder.defaultValue(input.defaultPosition);
-        builder.wrapSelectorWheel(true);
-        builder.backgroundColor(Color.TRANSPARENT);
+    /**
+     * get the picker with given input.
+     *
+     * @param input input class
+     * @return MaterialNumberPicker
+     */
+    public MaterialNumberPicker getPicker(Input input) {
+        MaterialNumberPicker.Builder pickerBuilder = new MaterialNumberPicker.Builder(this.builder.context);
+        pickerBuilder.minValue(0);
+        pickerBuilder.maxValue(input.list.size() - 1);
+        pickerBuilder.defaultValue(input.defaultPosition);
+        pickerBuilder.wrapSelectorWheel(true);
+        pickerBuilder.backgroundColor(Color.TRANSPARENT);
 
         if (this.builder.contentTextSize != 0) {
-            builder.textSize(this.builder.contentTextSize);
+            pickerBuilder.textSize(this.builder.contentTextSize);
         }
-        if (this.builder.contentTextColor != 0) {
-            builder.textColor(this.builder.contentTextColor);
+        if (this.builder.contentTextColor.getValue() != 0) {
+            pickerBuilder.textColor(this.builder.contentTextColor);
         }
 
         if (input.formatter != null) {
-            builder.formatter(input.formatter);
+            pickerBuilder.formatter(input.formatter);
         } else {
-            builder.formatter(new NumberPicker.Formatter() {
-                @Override
-                public String format(int value) {
-                    return input.list.get(value).toString();
-                }
-            });
+            pickerBuilder.formatter(value -> input.list.get(value).toString());
         }
 
-        return builder.build();
+        return pickerBuilder.build();
     }
 
-    private void createView() {
-        layout = new LinearLayout(builder.context);
-        layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+    /**
+     * apply background color to a component.
+     */
+    static void applyBackgroundColor(Component component, Color color) {
+        ShapeElement shapeElement = new ShapeElement();
+        shapeElement.setRgbColor(RgbColor.fromArgbInt(color.getValue()));
+        component.setBackground(shapeElement);
+    }
 
-        layout.setWeightSum((float)pickers.size());
-        layout.setLayoutParams(params);
+    //#endregion implementations
+    //#region create layout for the dialog
+
+    /**
+     * design diagram.
+     * [------------------------]
+     * |<--title                |
+     * |------------------------|
+     * |                        |
+     * |   ->     body    <-    |
+     * |                        |
+     * |------------------------|
+     * |        action buttons->|
+     * |------------------------|
+     *
+     * @param context context
+     */
+    public DirectionalLayout makeDialogTitle(Context context) {
+        final int paddingHorizontal = AttrHelper.vp2px(18, context);
+        final int paddingVertical = AttrHelper.vp2px(12, context);
+        int textSize = AttrHelper.vp2px(30, context);
+
+        final DirectionalLayout dialogTitleLayout = new DirectionalLayout(context);
+        Text dialogTitle = new Text(context);
+
+        dialogTitle.setTextSize(textSize);
+        dialogTitle.setText(getTitle());
+        dialogTitle.setTextColor(builder.titleColor);
+        dialogTitleLayout.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
+
+        dialogTitleLayout.addComponent(dialogTitle);
+        return dialogTitleLayout;
+    }
+
+
+    DirectionalLayout getBody() {
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        final int paddingVertical = AttrHelper.vp2px(18, builder.context);
+        DirectionalLayout body = new DirectionalLayout(builder.context);
+        final DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig();
+
+        body.setVerticalPadding(paddingVertical, paddingVertical);
+        body.setHorizontalPadding(paddingHorizontal, paddingHorizontal);
+        body.setAlignment(LayoutAlignment.CENTER);
+        body.setOrientation(Component.HORIZONTAL);
+
+        layoutConfig.alignment = LayoutAlignment.CENTER;
+
+        body.setLayoutConfig(layoutConfig);
+        applyBackgroundColor(body, builder.backgroundColor);
+        return body;
+    }
+
+    /**
+     * creates the bottom action layout.
+     *
+     * @return the bottom action layout
+     */
+    public DirectionalLayout createBottomActionBar() {
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        final int paddingVertical = AttrHelper.vp2px(12, builder.context);
+        final int btnTextSize = fpCalculationUtil.fpToPixels(Builder.ACTION_BTN_SIZE);
+
+        DirectionalLayout bottomLayout = new DirectionalLayout(builder.context);
+
+        bottomLayout.setAlignment(LayoutAlignment.END);
+        bottomLayout.setOrientation(Component.HORIZONTAL);
+        bottomLayout.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingHorizontal);
+
+        DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig(
+                DirectionalLayout.LayoutConfig.MATCH_PARENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
+        );
+
+        layoutConfig.alignment = LayoutAlignment.END;
+        layoutConfig.weight = pickers.size();
+        bottomLayout.setLayoutConfig(layoutConfig);
+
+
+        // #region positive button
+        Button positiveBtn = new Button(builder.context);
+        positiveBtn.setTextSize(btnTextSize);
+        positiveBtn.setTextColor(builder.positiveButtonColor);
+        positiveBtn.setText(getPositiveText());
+        positiveBtn.setClickedListener(c -> {
+            int[] selectedValues = new int[pickers.size()];
+            for (int i = 0; i < selectedValues.length; i++) {
+                selectedValues[i] = pickers.get(i).getValue();
+            }
+            if (builder.listener != null) {
+                builder.listener.onPick(selectedValues, builder.key);
+            }
+            dialog.hide();
+        });
+        //#endregion
+
+        //#region negative button
+        Button negativeBtn = new Button(builder.context);
+        negativeBtn.setTextSize(btnTextSize);
+        negativeBtn.setTextColor(builder.negativeButtonColor);
+        negativeBtn.setText(getNegativeButtonText());
+        negativeBtn.setMarginRight(paddingHorizontal);
+        negativeBtn.setClickedListener(c -> dialog.hide());
+        //#endregion
+
+
+        bottomLayout.addComponent(negativeBtn);
+        bottomLayout.addComponent(positiveBtn);
+
+        return bottomLayout;
+    }
+
+
+    /**
+     * make the dialog view.
+     */
+    public void createView() {
+        final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
+        layout = new DirectionalLayout(builder.context);
+        final DirectionalLayout.LayoutConfig layoutConfig = new DirectionalLayout.LayoutConfig(
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
+        );
+        final DirectionalLayout titleTextComponent = makeDialogTitle(builder.context);
+        final DirectionalLayout bottomActionComponent = createBottomActionBar();
+        final DirectionalLayout bodyComponetText = getBody();
+
+
+        layout.setOrientation(Component.VERTICAL);
+        layout.setMarginsLeftAndRight(paddingHorizontal, paddingHorizontal);
+        layoutConfig.weight = pickers.size();
+        applyBackgroundColor(layout, builder.backgroundColor);
+        layout.setLayoutConfig(layoutConfig);
 
         for (MaterialNumberPicker picker : pickers) {
-            LinearLayout.LayoutParams pickerParams = new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            pickerParams.weight = 1.0f;
-            picker.setLayoutParams(pickerParams);
-
-            layout.addView(picker);
-        }
-    }
-
-    protected void createDialog() {
-        this.dialog = new AlertDialog.Builder(builder.context)
-                .setTitle(getTitle())
-                .setView(layout)
-                .setCancelable(true)
-                .setNegativeButton(
-                        getNegativeButtonText(),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                .setPositiveButton(
-                        getPositiveButtonText(),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                int[] selectedValues = new int[pickers.size()];
-                                for (int i = 0; i < selectedValues.length; i++) {
-                                    selectedValues[i] = pickers.get(i).getValue();
-                                }
-                                if (builder.listener != null)
-                                    builder.listener.onPick(selectedValues, builder.key);
-                            }
-                        })
-                .create();
-
-        if (builder.backgroundColor != 0) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(builder.backgroundColor));
+            ComponentContainer.LayoutConfig pickerParams = new ComponentContainer.LayoutConfig(
+                    ComponentContainer.LayoutConfig.MATCH_CONTENT,
+                    ComponentContainer.LayoutConfig.MATCH_CONTENT
+            );
+            pickerParams.setMarginsLeftAndRight(paddingHorizontal, paddingHorizontal);
+            picker.setLayoutConfig(pickerParams);
+            bodyComponetText.addComponent(picker);
         }
 
-        dialog.setOnShowListener(this);
+        layout.addComponent(titleTextComponent);
+        layout.addComponent(bodyComponetText);
+        layout.addComponent(bottomActionComponent);
 
     }
 
-    private Spannable getTitle() {
-        Spannable title = null;
-        if (builder.title != null) {
-            title = new SpannableString(builder.title);
-            if (builder.titleColor != 0) {
-                title.setSpan(
-                        new ForegroundColorSpan(builder.titleColor),
-                        0, title.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        return title;
+
+    /**
+     * creates a CommonDialog with a custom layout.
+     */
+    public void createDialog() {
+        dialog = new CommonDialog(builder.context)
+                .setContentCustomComponent(layout);
+        dialog.setSize(
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT,
+                DirectionalLayout.LayoutConfig.MATCH_CONTENT
+        );
+        dialog.setSwipeToDismiss(true);
+        dialog.setDialogListener(this);
     }
 
-    private String getNegativeButtonText() {
-        return builder.negativeButtonText != null
-                ? builder.negativeButtonText
-                : builder.context.getString(android.R.string.cancel);
-    }
-
-    private String getPositiveButtonText() {
-        return builder.positiveButtonText != null
-                ? builder.positiveButtonText
-                : builder.context.getString(android.R.string.ok);
-    }
 
     @Override
-    public void onShow(DialogInterface dialog) {
-        if (builder.negativeButtonColor != 0) {
-            this.dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-                    .setTextColor(builder.negativeButtonColor);
-        }
-        if (builder.positiveButtonColor != 0) {
-            this.dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                    .setTextColor(builder.positiveButtonColor);
-        }
+    public boolean isTouchOutside() {
+        dialog.hide();
+        return false;
     }
 
     /**
-     * Interface definition for a callback to be invoked when data is picked
-     * */
-    public interface OnPickListener {
-
-        /**
-         * Called when data has been picked
-         *
-         * @param selectedValues array with selected indices in the order in which {@link Input}s were added
-
-         * */
-        void onPick(int[] selectedValues, int key);
+     * get title from the builder.
+     *
+     * @return title
+     */
+    public String getTitle() {
+        return builder.title;
     }
 
     /**
-     * Wrapper for representing a data set with default position in list
-     * */
+     * get negativeButtonText from the builder.
+     *
+     * @return negativeButtonText
+     */
+    public String getNegativeButtonText() {
+        return builder.negativeButtonText != null
+                ? builder.negativeButtonText
+                : builder.context.getString(ResourceTable.String_cancel_text);
+    }
+
+    /**
+     * get positiveButtonText from the builder.
+     *
+     * @return positiveButtonText
+     */
+    public String getPositiveText() {
+        return builder.positiveButtonText != null
+                ? builder.positiveButtonText
+                : builder.context.getString(ResourceTable.String_ok_text);
+    }
+
+
+    //#endregion implementations
+
+    /**
+     * UniversalPickerDialog constructor.
+     *
+     * @param builder builder
+     */
+    protected UniversalPickerDialog(Builder builder) {
+        fpCalculationUtil = new FpCalculationUtil(builder.context);
+        this.builder = builder;
+        initPickers(builder.inputs);
+        createView();
+        createDialog();
+    }
+
+
+    //#region input
+
+    /**
+     * input class to add data to the UniversalPickerDialog.
+     */
     public static class Input {
-
-        private int defaultPosition;
-        private AbstractList<?> list;
-        private NumberPicker.Formatter formatter;
+        private final int defaultPosition;
+        private final AbstractList<?> list;
+        private Picker.Formatter formatter;
 
         /**
-         * Constructor for data represented in {@link AbstractList}
+         * Constructor for data represented in {@link AbstractList}.
          *
          * @param defaultPosition is a position of item which selected by default
-         * @param list list of objects
-         * */
+         * @param list            list of objects
+         */
         public Input(int defaultPosition, AbstractList<?> list) {
             this.defaultPosition = defaultPosition;
             this.list = list;
         }
 
         /**
-         * Constructor for data represented in array
+         * Constructor for data represented in array.
          *
          * @param defaultPosition is a position of item which selected by default
-         * @param array array of objects
-         * */
+         * @param array           array of objects
+         * @param <T>             array type
+         */
         public <T> Input(int defaultPosition, T[] array) {
             this.defaultPosition = defaultPosition;
             this.list = new ArrayList<>(Arrays.asList(array));
         }
 
         /**
-         * Set {@link android.widget.NumberPicker.Formatter} for format current value into a string for presentation
-         * */
-        public void setFormatter(NumberPicker.Formatter formatter) {
+         * Set {@link Picker.Formatter} for format current value into a string for presentation.
+         *
+         * @param formatter formatter
+         */
+        public void setFormatter(Picker.Formatter formatter) {
             this.formatter = formatter;
         }
-
     }
 
     /**
-     * Builder class for {@link UniversalPickerDialog}
-     * */
-    public static class Builder {
+     * Interface definition for a callback to be invoked when data is picked.
+     */
+    public interface OnPickListener {
+        /**
+         * Called when data has been picked.
+         *
+         * @param selectedValues array with selected indices in the order in which {@link Input}s were added
+         * @param key            key
+         */
+        void onPick(int[] selectedValues, int key);
+    }
 
+    //#endregion input
+
+    //#region builder
+
+    /**
+     * Builder class to add setting to the UniversalPickerDialog.
+     */
+    public static class Builder {
+        public static final int ACTION_BTN_SIZE = 32;
         private Context context;
-        private @ColorInt int positiveButtonColor, negativeButtonColor,
-                titleColor, backgroundColor, contentTextColor;
-        private float contentTextSize;
+        private Color positiveButtonColor = Color.BLACK;
+        private Color negativeButtonColor = Color.BLACK;
+        private Color titleColor = Color.BLACK;
+        private Color backgroundColor;
+        private Color contentTextColor;
+        private int contentTextSize;
         private int key;
         private String title;
-        private String negativeButtonText, positiveButtonText;
+        private String negativeButtonText;
+        private String positiveButtonText;
         private OnPickListener listener;
         private Input[] inputs;
 
         /**
          * Constructor using a context for this builder and the {@link UniversalPickerDialog} it creates.
+         *
+         * @param context context
          */
         public Builder(Context context) {
             this.context = context;
+            contentTextColor = Color.BLACK;
+            backgroundColor = Color.WHITE;
+
         }
 
         /**
-         * Set text color resource for negative and positive buttons
+         * Set text color resource for negative and positive buttons.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setButtonsColorRes(@ColorRes int color) {
-            return this.setButtonsColor(context.getResources().getColor(color));
+         */
+        public Builder setButtonsColorRes(Color color) {
+            return this.setButtonsColor(
+                    new Color(context.getColor(color.getValue()))
+            );
         }
 
         /**
-         * Set text color int for negative and positive buttons
+         * Set text color int for negative and positive buttons.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setButtonsColor(@ColorInt int color) {
+         */
+        public Builder setButtonsColor(Color color) {
             this.positiveButtonColor = negativeButtonColor = color;
             return this;
         }
 
         /**
-         * Set text color resource for positive button
+         * Set text color resource for positive button.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setPositiveButtonColorRes(@ColorRes int color) {
-            return this.setPositiveButtonColor(context.getResources().getColor(color));
+         */
+        public Builder setPositiveButtonColorRes(int color) {
+            return this.setPositiveButtonColor(
+                    new Color(context.getColor(color))
+            );
         }
 
         /**
-         * Set text color int for positive button
+         * Set text color int for positive button.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setPositiveButtonColor(@ColorInt int color) {
+         */
+        public Builder setPositiveButtonColor(Color color) {
             this.positiveButtonColor = color;
             return this;
         }
 
         /**
-         * Set text color resource for negative button
+         * Set text color resource for negative button.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setNegativeButtonColorRes(@ColorRes int color) {
-            return this.setNegativeButtonColor(context.getResources().getColor(color));
+         */
+        public Builder setNegativeButtonColorRes(int color) {
+            return this.setNegativeButtonColor(
+                    new Color(context.getColor(color))
+            );
         }
 
         /**
-         * Set text color int for negative button
+         * Set text color int for negative button.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setNegativeButtonColor(@ColorInt int color) {
+         */
+        public Builder setNegativeButtonColor(Color color) {
             this.negativeButtonColor = color;
             return this;
         }
 
         /**
-         * Set text color resource for title
+         * Set text color resource for title.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setTitleColorRes(@ColorRes int color) {
-            return this.setTitleColor(context.getResources().getColor(color));
+         */
+        public Builder setTitleColorRes(int color) {
+            return this.setTitleColor(
+                    new Color(context.getColor(color))
+            );
         }
 
         /**
-         * Set text color int for title
+         * Set text color int for title.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setTitleColor(@ColorInt int color) {
+         */
+        public Builder setTitleColor(Color color) {
             this.titleColor = color;
             return this;
         }
 
         /**
-         * Set background color resource for dialog
+         * Set background color resource for dialog.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setBackgroundColorRes(@ColorRes int color) {
-            return this.setBackgroundColor(context.getResources().getColor(color));
+         */
+        public Builder setBackgroundColorRes(int color) {
+            return this.setBackgroundColor(
+                    new Color(context.getColor(color))
+            );
         }
 
         /**
-         * Set background color int for dialog
+         * Set background color int for dialog.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setBackgroundColor(@ColorInt int color) {
+         */
+        public Builder setBackgroundColor(Color color) {
             this.backgroundColor = color;
             return this;
         }
 
         /**
-         * Set text color resource data set items
+         * Set text color resource data set items.
          *
+         * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        @SuppressWarnings("deprecation")
-        public Builder setContentTextColorRes(@ColorRes int color) {
-            return this.setContentTextColor(context.getResources().getColor(color));
+         */
+        public Builder setContentTextColorRes(int color) {
+            return this.setContentTextColor(
+                    new Color(context.getColor(color))
+            );
         }
 
         /**
-         * Set text color int for data set items
+         * Set text color int for data set items.
          *
+         * @param color color
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setContentTextColor(@ColorInt int color) {
+         */
+        public Builder setContentTextColor(Color color) {
             this.contentTextColor = color;
             return this;
         }
 
         /**
-         * Set text size sp for data set items
+         * Set text size sp for data set items.
          *
+         * @param size text size
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setContentTextSize(float size) {
+         */
+        public Builder setContentTextSize(int size) {
             this.contentTextSize = size;
             return this;
         }
@@ -413,65 +586,72 @@ public class UniversalPickerDialog
          * It may be helpful if you using more than one picker in your activity/fragment.
          * This key will be returned in {@link OnPickListener#onPick(int[], int)}
          *
+         * @param key key
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setKey(int key) {
             this.key = key;
             return this;
         }
 
         /**
-         * Set title text resource
+         * Set title text resource.
          *
+         * @param title title
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setTitle(@StringRes int title) {
+         */
+        public Builder setTitle(int title) {
             return setTitle(context.getString(title));
         }
 
         /**
-         * Set title text string
+         * Set title text string.
          *
+         * @param title title
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
 
         /**
-         * Set positive button text resource
+         * Set positive button text resource.
          *
+         * @param text string resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setPositiveButtonText(@StringRes int text) {
+         */
+        public Builder setPositiveButtonText(int text) {
             return setPositiveButtonText(context.getString(text));
         }
 
         /**
-         * Set positive button text string
+         * Set positive button text string.
          *
+         * @param text positive button text
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setPositiveButtonText(String text) {
             this.positiveButtonText = text;
             return this;
         }
 
         /**
-         * Set negative button text resource
+         * Set negative button text resource.
          *
+         * @param text string resource id
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
-        public Builder setNegativeButtonText(@StringRes int text) {
+         */
+        public Builder setNegativeButtonText(int text) {
             return setNegativeButtonText(context.getString(text));
         }
 
         /**
-         * Set negative button text string
+         * Set negative button text string.
          *
+         * @param text negative button text
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setNegativeButtonText(String text) {
             this.negativeButtonText = text;
             return this;
@@ -480,8 +660,9 @@ public class UniversalPickerDialog
         /**
          * Set {@link OnPickListener} for picker.
          *
+         * @param listener listener
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setListener(OnPickListener listener) {
             this.listener = listener;
             return this;
@@ -491,8 +672,9 @@ public class UniversalPickerDialog
          * Set list of {@link Input}'s using varargs.
          * Each {@link Input} is representing an spinner in dialog with list of items from its {@link Input#list}
          *
+         * @param inputs inputs
          * @return This Builder object to allow for chaining of calls to set methods
-         * */
+         */
         public Builder setInputs(Input... inputs) {
             this.inputs = inputs;
             return this;
@@ -518,4 +700,6 @@ public class UniversalPickerDialog
             return dialog;
         }
     }
+
+    //#endregion builder
 }
