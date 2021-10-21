@@ -1,4 +1,7 @@
 # UniversalPickerDialog
+[![Build](https://github.com/applibgroup/UniversalPickerDialog/actions/workflows/main.yml/badge.svg)](https://github.com/applibgroup/UniversalPickerDialog/actions/workflows/main.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=applibgroup_UniversalPickerDialog&metric=alert_status)](https://sonarcloud.io/dashboard?id=applibgroup_UniversalPickerDialog)
+
 HMOS 3rd party library to make implementing Dialog more easier. It includes two abilities :
 1. Single Picker 
 2. Multi picker
