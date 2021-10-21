@@ -438,9 +438,9 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          * @param color color resource id
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setButtonsColorRes(Color color) {
+        public Builder setButtonsColorRes(int color) {
             return this.setButtonsColor(
-                    new Color(context.getColor(color.getValue()))
+                    new Color(context.getColor(color))
             );
         }
 
