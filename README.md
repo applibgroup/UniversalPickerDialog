@@ -1,6 +1,8 @@
 # UniversalPickerDialog
 [![Build](https://github.com/applibgroup/UniversalPickerDialog/actions/workflows/main.yml/badge.svg)](https://github.com/applibgroup/UniversalPickerDialog/actions/workflows/main.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=applibgroup_UniversalPickerDialog&metric=alert_status)](https://sonarcloud.io/dashboard?id=applibgroup_UniversalPickerDialog)
+[![license](https://img.shields.io/github/license/applibgroup/UniversalPickerDialog?color=blue)](LICENSE)
+![1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)
 
 HMOS 3rd party library to make implementing Dialog more easier. It includes two abilities :
 1. Single Picker 
@@ -17,6 +19,24 @@ This library has been inspired by [stfalcon-studio/UniversalPickerDialog](https:
 
 ### Integration
 ---
+**Maven**
+
+```xml
+<dependency>
+  <groupId>dev.applibgroup</groupId>
+  <artifactId>universalpickerdialog</artifactId>
+  <version>1.0.0</version>
+  <type>har</type>
+</dependency>
+```
+
+**Gradle**
+
+```groovy
+implementation 'dev.applibgroup:universalpickerdialog:1.0.0'
+```
+
+**From Source**
 1. For using UniversalPickerDialog module in sample app, include the source code and add the below dependencies in entry/build.gradle to generate hap/support.har.
     ```groovy
     implementation project(path: ':universalpickerdialog')
@@ -25,6 +45,7 @@ This library has been inspired by [stfalcon-studio/UniversalPickerDialog](https:
     ```groovy
    implementation fileTree(dir: 'libs', include: ['*.har'])
    ```
+
 ### Usages
 ---
 implement callback interfaces:
