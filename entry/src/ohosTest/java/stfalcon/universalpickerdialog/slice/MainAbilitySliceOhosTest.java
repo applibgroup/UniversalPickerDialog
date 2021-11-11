@@ -1,6 +1,7 @@
 package stfalcon.universalpickerdialog.slice;
 
 import ohos.aafwk.ability.delegation.AbilityDelegatorRegistry;
+import ohos.agp.utils.Color;
 import ohos.app.Context;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +17,12 @@ public class MainAbilitySliceOhosTest {
         Context context = AbilityDelegatorRegistry.getAbilityDelegator().getAppContext();
         universalPickerDialog = new UniversalPickerDialog.Builder(context)
                 .setTitle("Pick A city")
+                .setTitleColor(Color.DKGRAY)
                 .setPositiveButtonText("Select")
+                .setPositiveButtonColor(Color.GREEN)
                 .setNegativeButtonText("Cancel")
+                .setNegativeButtonColor(Color.RED)
+                .setContentTextColor(Color.CYAN)
                 .build();
     }
 
@@ -30,6 +35,7 @@ public class MainAbilitySliceOhosTest {
     @Test
     public void testTitle() {
         final String title = universalPickerDialog.getTitle();
+
         assertEquals("Pick A city", title);
     }
 
@@ -43,5 +49,29 @@ public class MainAbilitySliceOhosTest {
     public void testNegativeText() {
         final String negativeButtonText = universalPickerDialog.getNegativeButtonText();
         assertEquals("Cancel", negativeButtonText);
+    }
+
+    @Test
+    public void testTitleColor() {
+        final Color titleColor = universalPickerDialog.getTitleColor();
+        assertEquals(Color.DKGRAY, titleColor);
+    }
+
+    @Test
+    public void testPositiveButtonColor() {
+        final Color positiveButtonColor = universalPickerDialog.getPositiveButtonColor();
+        assertEquals(Color.GREEN, positiveButtonColor);
+    }
+
+    @Test
+    public void testNegativeButtonColor() {
+        final Color negativeButtonColor = universalPickerDialog.getNegativeButtonColor();
+        assertEquals(Color.RED, negativeButtonColor);
+    }
+
+    @Test
+    public void testContentTextColor() {
+        final Color contentTextColor = universalPickerDialog.getContentTextColor();
+        assertEquals(Color.CYAN, contentTextColor);
     }
 }
