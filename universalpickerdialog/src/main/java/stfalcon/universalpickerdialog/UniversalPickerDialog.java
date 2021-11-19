@@ -93,7 +93,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      *
      * @param inputs inputs
      */
-    public void initPickers(Input... inputs) {
+    private void initPickers(Input... inputs) {
         this.pickers = new ArrayList<>();
         if (inputs != null) {
             for (Input input : inputs) {
@@ -111,7 +111,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      * @param input input class
      * @return MaterialNumberPicker
      */
-    public MaterialNumberPicker getPicker(Input input) {
+    private MaterialNumberPicker getPicker(Input input) {
         MaterialNumberPicker.Builder pickerBuilder = new MaterialNumberPicker.Builder(this.builder.context);
         pickerBuilder.minValue(0);
         pickerBuilder.maxValue(input.list.size() - 1);
