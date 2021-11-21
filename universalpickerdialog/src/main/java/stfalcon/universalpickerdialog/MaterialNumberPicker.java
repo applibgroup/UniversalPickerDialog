@@ -34,7 +34,7 @@ public class MaterialNumberPicker extends Picker {
     private static final int DEFAULT_VALUE = 1;
     private static final int TEXT_SIZE = 24;
     private static final Color SELECTED_TEXT_COLOR = Color.WHITE;
-    private static final Color TEXT_COLOR = new Color(Color.argb(50,255,255,155));
+    private static final Color TEXT_COLOR = new Color(Color.argb(50, 255, 255, 155));
     private static final Color BACKGROUND_COLOR = Color.WHITE;
     //#endregion default values
     //#region param
