@@ -103,6 +103,7 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
     }
 
     //#endregion implementations
+
     //#region create layout for the dialog
 
     /**
@@ -124,6 +125,9 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         }
         if (this.builder.contentTextColor.getValue() != 0) {
             pickerBuilder.textColor(this.builder.contentTextColor);
+        }
+        if (this.builder.selectedTextColor.getValue() != 0) {
+            pickerBuilder.selectedTextColor(this.builder.selectedTextColor);
         }
 
         if (input.formatter != null) {
@@ -439,12 +443,13 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      */
     public static class Builder {
         public static final int ACTION_BTN_SIZE = 32;
-        private Context context;
+        private final Context context;
         private Color positiveButtonColor = Color.BLACK;
         private Color negativeButtonColor = Color.BLACK;
         private Color titleColor = Color.BLACK;
         private Color backgroundColor;
         private Color contentTextColor;
+        private Color selectedTextColor;
         private int contentTextSize;
         private int key;
         private String title;
@@ -460,7 +465,8 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          */
         public Builder(Context context) {
             this.context = context;
-            contentTextColor = Color.BLACK;
+            contentTextColor = new Color(Color.argb(150, 0, 0, 0));
+            selectedTextColor = Color.BLACK;
             backgroundColor = Color.WHITE;
 
         }
@@ -600,6 +606,29 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          */
         public Builder setContentTextColor(Color color) {
             this.contentTextColor = color;
+            return this;
+        }
+
+        /**
+         * Set text color resource data set items.
+         *
+         * @param color color resource id
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setSelectedTextColorRes(int color) {
+            return this.setSelectedTextColor(
+                    new Color(context.getColor(color))
+            );
+        }
+
+        /**
+         * Set text color int for data set items.
+         *
+         * @param color color
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setSelectedTextColor(Color color) {
+            this.selectedTextColor = color;
             return this;
         }
 
