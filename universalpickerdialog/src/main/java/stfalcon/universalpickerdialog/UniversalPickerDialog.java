@@ -40,16 +40,38 @@ import java.util.Arrays;
  */
 public class UniversalPickerDialog implements BaseDialog.DialogListener {
 
-    //#region parameters
-    private FpCalculationUtil fpCalculationUtil;
     protected Builder builder;
     protected ArrayList<MaterialNumberPicker> pickers;
     protected CommonDialog dialog;
+    //#region parameters
+    private FpCalculationUtil fpCalculationUtil;
     private DirectionalLayout layout;
 
     //#endregion parameters
 
     //#region implementations
+
+    /**
+     * UniversalPickerDialog constructor.
+     *
+     * @param builder builder
+     */
+    protected UniversalPickerDialog(Builder builder) {
+        fpCalculationUtil = new FpCalculationUtil(builder.context);
+        this.builder = builder;
+        initPickers(builder.inputs);
+        createView();
+        createDialog();
+    }
+
+    /**
+     * apply background color to a component.
+     */
+    static void applyBackgroundColor(Component component, Color color) {
+        ShapeElement shapeElement = new ShapeElement();
+        shapeElement.setRgbColor(RgbColor.fromArgbInt(color.getValue()));
+        component.setBackground(shapeElement);
+    }
 
     /**
      * Displays the dialog.
@@ -66,13 +88,12 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         dialog.hide();
     }
 
-
     /**
      * init the picker with given inputs.
      *
      * @param inputs inputs
      */
-    public void initPickers(Input... inputs) {
+    private void initPickers(Input... inputs) {
         this.pickers = new ArrayList<>();
         if (inputs != null) {
             for (Input input : inputs) {
@@ -81,13 +102,17 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         }
     }
 
+    //#endregion implementations
+
+    //#region create layout for the dialog
+
     /**
      * get the picker with given input.
      *
      * @param input input class
      * @return MaterialNumberPicker
      */
-    public MaterialNumberPicker getPicker(Input input) {
+    private MaterialNumberPicker getPicker(Input input) {
         MaterialNumberPicker.Builder pickerBuilder = new MaterialNumberPicker.Builder(this.builder.context);
         pickerBuilder.minValue(0);
         pickerBuilder.maxValue(input.list.size() - 1);
@@ -101,6 +126,9 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         if (this.builder.contentTextColor.getValue() != 0) {
             pickerBuilder.textColor(this.builder.contentTextColor);
         }
+        if (this.builder.selectedTextColor.getValue() != 0) {
+            pickerBuilder.selectedTextColor(this.builder.selectedTextColor);
+        }
 
         if (input.formatter != null) {
             pickerBuilder.formatter(input.formatter);
@@ -110,19 +138,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
 
         return pickerBuilder.build();
     }
-
-
-    /**
-     * apply background color to a component.
-     */
-    static void applyBackgroundColor(Component component, Color color) {
-        ShapeElement shapeElement = new ShapeElement();
-        shapeElement.setRgbColor(RgbColor.fromArgbInt(color.getValue()));
-        component.setBackground(shapeElement);
-    }
-
-    //#endregion implementations
-    //#region create layout for the dialog
 
     /**
      * design diagram.
@@ -154,7 +169,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         dialogTitleLayout.addComponent(dialogTitle);
         return dialogTitleLayout;
     }
-
 
     DirectionalLayout getBody() {
         final int paddingHorizontal = AttrHelper.vp2px(18, builder.context);
@@ -233,7 +247,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         return bottomLayout;
     }
 
-
     /**
      * make the dialog view.
      */
@@ -271,7 +284,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
 
     }
 
-
     /**
      * creates a CommonDialog with a custom layout.
      */
@@ -285,7 +297,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         dialog.setSwipeToDismiss(true);
         dialog.setDialogListener(this);
     }
-
 
     @Override
     public boolean isTouchOutside() {
@@ -324,24 +335,63 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
                 : builder.context.getString(ResourceTable.String_ok_text);
     }
 
+    /**
+     * get the title color of the dialog.
+     *
+     * @return title color of the dialog
+     */
+    public Color getTitleColor() {
+        return builder.titleColor;
+    }
+
+    /**
+     * get the positive button color of the dialog.
+     *
+     * @return positive button color of the dialog
+     */
+    public Color getPositiveButtonColor() {
+        return builder.positiveButtonColor;
+    }
+
+    /**
+     * get the negative button color of the dialog.
+     *
+     * @return negative button color of the dialog
+     */
+    public Color getNegativeButtonColor() {
+        return builder.negativeButtonColor;
+    }
+
+    /**
+     * get the content button color of the dialog.
+     *
+     * @return content button color of the dialog
+     */
+    public Color getContentTextColor() {
+        return builder.contentTextColor;
+    }
 
     //#endregion implementations
 
-    /**
-     * UniversalPickerDialog constructor.
-     *
-     * @param builder builder
-     */
-    protected UniversalPickerDialog(Builder builder) {
-        fpCalculationUtil = new FpCalculationUtil(builder.context);
-        this.builder = builder;
-        initPickers(builder.inputs);
-        createView();
-        createDialog();
+    public Color getBackgroundColor() {
+        return builder.backgroundColor;
     }
 
 
     //#region input
+
+    /**
+     * Interface definition for a callback to be invoked when data is picked.
+     */
+    public interface OnPickListener {
+        /**
+         * Called when data has been picked.
+         *
+         * @param selectedValues array with selected indices in the order in which {@link Input}s were added
+         * @param key            key
+         */
+        void onPick(int[] selectedValues, int key);
+    }
 
     /**
      * input class to add data to the UniversalPickerDialog.
@@ -384,19 +434,6 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
         }
     }
 
-    /**
-     * Interface definition for a callback to be invoked when data is picked.
-     */
-    public interface OnPickListener {
-        /**
-         * Called when data has been picked.
-         *
-         * @param selectedValues array with selected indices in the order in which {@link Input}s were added
-         * @param key            key
-         */
-        void onPick(int[] selectedValues, int key);
-    }
-
     //#endregion input
 
     //#region builder
@@ -406,12 +443,13 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
      */
     public static class Builder {
         public static final int ACTION_BTN_SIZE = 32;
-        private Context context;
+        private final Context context;
         private Color positiveButtonColor = Color.BLACK;
         private Color negativeButtonColor = Color.BLACK;
         private Color titleColor = Color.BLACK;
         private Color backgroundColor;
         private Color contentTextColor;
+        private Color selectedTextColor;
         private int contentTextSize;
         private int key;
         private String title;
@@ -427,7 +465,8 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          */
         public Builder(Context context) {
             this.context = context;
-            contentTextColor = Color.BLACK;
+            contentTextColor = new Color(Color.argb(150, 0, 0, 0));
+            selectedTextColor = Color.BLACK;
             backgroundColor = Color.WHITE;
 
         }
@@ -567,6 +606,29 @@ public class UniversalPickerDialog implements BaseDialog.DialogListener {
          */
         public Builder setContentTextColor(Color color) {
             this.contentTextColor = color;
+            return this;
+        }
+
+        /**
+         * Set text color resource data set items.
+         *
+         * @param color color resource id
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setSelectedTextColorRes(int color) {
+            return this.setSelectedTextColor(
+                    new Color(context.getColor(color))
+            );
+        }
+
+        /**
+         * Set text color int for data set items.
+         *
+         * @param color color
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setSelectedTextColor(Color color) {
+            this.selectedTextColor = color;
             return this;
         }
 

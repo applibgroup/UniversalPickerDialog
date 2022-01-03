@@ -33,7 +33,8 @@ public class MaterialNumberPicker extends Picker {
     private static final int MAX_VALUE = 10;
     private static final int DEFAULT_VALUE = 1;
     private static final int TEXT_SIZE = 24;
-    private static final Color TEXT_COLOR = Color.BLACK;
+    private static final Color SELECTED_TEXT_COLOR = Color.WHITE;
+    private static final Color TEXT_COLOR = new Color(Color.argb(50, 255, 255, 155));
     private static final Color BACKGROUND_COLOR = Color.WHITE;
     //#endregion default values
     //#region param
@@ -61,7 +62,7 @@ public class MaterialNumberPicker extends Picker {
         setValue(builder.defaultValue);
 
         setNormalTextColor(builder.textColor);
-        setSelectedTextColor(builder.textColor);
+        setSelectedTextColor(builder.selectedTextColor);
         setNormalTextSize(fpCalculationUtil.fpToPixels(builder.textSize));
         setSelectedTextSize(fpCalculationUtil.fpToPixels((int) (builder.textSize * 1.2)));
 
@@ -109,7 +110,7 @@ public class MaterialNumberPicker extends Picker {
         setValue(DEFAULT_VALUE);
 
         setNormalTextColor(TEXT_COLOR);
-        setSelectedTextColor(TEXT_COLOR);
+        setSelectedTextColor(SELECTED_TEXT_COLOR);
         setNormalTextSize(TEXT_SIZE);
         setSelectedTextSize((int) (TEXT_SIZE * 1.2));
 
@@ -154,10 +155,11 @@ public class MaterialNumberPicker extends Picker {
      * @noinspection UnusedReturnValue
      */
     public static class Builder {
-        private Context context;
+        private final Context context;
         private Formatter formatter;
         private Color backgroundColor = BACKGROUND_COLOR;
         private Color textColor = TEXT_COLOR;
+        private Color selectedTextColor = SELECTED_TEXT_COLOR;
         private int textSize = TEXT_SIZE;
         private int minValue = MIN_VALUE;
         private int maxValue = MAX_VALUE;
@@ -181,6 +183,11 @@ public class MaterialNumberPicker extends Picker {
 
         public Builder textColor(Color textColor) {
             this.textColor = textColor;
+            return this;
+        }
+
+        public Builder selectedTextColor(Color selectedTextColor) {
+            this.selectedTextColor = selectedTextColor;
             return this;
         }
 
